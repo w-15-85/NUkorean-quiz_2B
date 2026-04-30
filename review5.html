@@ -9,29 +9,23 @@
         body { font-family: 'Malgun Gothic', sans-serif; line-height: 1.6; padding: 20px; max-width: 850px; margin: 0 auto; background-color: #f4f6f8; }
         h1 { text-align: center; color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
         
-        /* 정보 바 */
         .info-box { background: #e8f4f8; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #3498db; display: none; }
         .timer { color: #e74c3c; font-size: 1.3em; font-weight: bold; }
         
-        /* 시작 화면 */
         #start-screen { background: white; padding: 40px; border-radius: 8px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-top: 50px; }
         #start-screen input[type="text"] { width: 60%; padding: 12px; font-size: 1.2em; border: 2px solid #3498db; border-radius: 8px; margin-bottom: 20px; text-align: center; }
         
-        /* 퀴즈 컨테이너 */
         .stage-container { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: none; }
         .stage-title { color: #fff; background-color: #2c3e50; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 1.2em; text-align: center;}
         
         .grammar-box { background-color: #fff3cd; border-left: 5px solid #ffc107; padding: 15px; margin-bottom: 20px; border-radius: 5px; color: #856404; }
         .grammar-box h3 { margin: 0 0 10px 0; font-size: 1.2em; color: #664d03; }
-        .grammar-box ul { margin: 0; padding-left: 20px; font-weight: normal; }
-        .grammar-box li { margin-bottom: 5px; }
-
+        
         .question-item { margin-bottom: 20px; font-size: 1.1em; border-bottom: 1px dashed #ddd; padding-bottom: 15px; }
         .dialogue { background: #f1f2f6; padding: 15px; border-radius: 5px; margin-bottom: 5px; }
         
         input[type="text"] { border: 1px solid #bdc3c7; border-radius: 4px; padding: 8px; font-size: 1em; width: 220px; font-weight: bold; color: #2c3e50; }
         
-        /* 버튼 디자인 */
         .button-group { display: flex; gap: 10px; margin-top: 20px; }
         .action-btn { flex: 1; padding: 15px; color: white; border: none; border-radius: 8px; font-size: 1.1em; cursor: pointer; font-weight: bold; }
         .submit-btn { background: #27ae60; }
@@ -42,7 +36,6 @@
         .correct-answer { color: #e74c3c; font-size: 0.9em; display: none; margin-top: 5px; font-weight: bold; }
         .feedback { text-align: center; font-size: 1.2em; font-weight: bold; color: #2980b9; margin: 15px 0; display: none; }
 
-        /* 결과 화면 */
         #result-screen { background: #fff; padding: 40px; border-radius: 12px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-top: 30px; display: none; border: 4px solid #f1c40f; }
         .score-table { width: 100%; max-width: 500px; margin: 20px auto; border-collapse: collapse; }
         .score-table th, .score-table td { padding: 12px; border: 1px solid #ddd; font-size: 1.1em; }
@@ -55,18 +48,18 @@
     
     <div id="start-screen">
         <h2>이름을 입력하고 퀴즈를 시작하세요!</h2>
-        <p>이전 단계로 돌아가도 작성했던 답안과 채점 결과가 유지됩니다.</p>
+        <p>각 단계별로 제한 시간이 있습니다. <br>시간 초과 시 현재까지 쓴 답으로 <strong>자동 채점</strong>됩니다.</p>
         <input type="text" id="studentName" placeholder="이름 입력 (예: 마이클)">
         <button class="action-btn start-btn" onclick="startQuiz()">🚀 시작하기</button>
     </div>
 
     <div class="info-box" id="infoBox">
         <div id="stageIndicator">학생: <span id="displayName"></span> | <span id="currentStageName">1단계</span></div>
-        <div class="timer" id="timerDisplay">남은 시간: 50:00</div>
+        <div class="timer" id="timerDisplay">남은 시간: 15:00</div>
     </div>
 
     <div id="stage1" class="stage-container">
-        <div class="stage-title">🌱 1단계: 13~15과 어휘 총정리 (20문제)</div>
+        <div class="stage-title">🌱 1단계: 13~15과 어휘 총정리 (20문제 / 15분)</div>
         <div class="grammar-box">
             <h3>📍 어휘 힌트 (기본형으로 쓰세요)</h3>
             <p>기숙사, 부엌, 수도 요금, 두 손으로, 금연, 태어나다, 졸업하다, 취직하다, 교통비, 원룸, 양보하다, 고개를 돌리고, 사진 촬영 금지, 오르다, 결혼하다, 편리하다, 승진하다, 존댓말, 음식물 반입 금지, 전망이 좋다</p>
@@ -74,13 +67,13 @@
         <div id="q-container-1"></div>
         <div class="feedback" id="feedback1"></div>
         <div class="button-group">
-            <button class="action-btn submit-btn" id="submit1" onclick="checkAnswers(1)">정답 확인</button>
+            <button class="action-btn submit-btn" id="submit1" onclick="checkAnswers(1, false)">정답 확인</button>
             <button class="action-btn next-btn" id="nextBtn1" style="display:none;" onclick="nextStage(2)">2단계로 이동 ➔</button>
         </div>
     </div>
 
     <div id="stage2" class="stage-container">
-        <div class="stage-title">🌿 2단계: 13과, 14과 문법 연습 (20문제)</div>
+        <div class="stage-title">🌿 2단계: 13, 14과 문법 연습 (10문제 / 10분)</div>
         <div class="grammar-box">
             <h3>📖 활용 문법</h3>
             <ul>
@@ -92,13 +85,13 @@
         <div class="feedback" id="feedback2"></div>
         <div class="button-group">
             <button class="action-btn prev-btn" onclick="prevStage(1)">⬅ 이전으로</button>
-            <button class="action-btn submit-btn" id="submit2" onclick="checkAnswers(2)">정답 확인</button>
+            <button class="action-btn submit-btn" id="submit2" onclick="checkAnswers(2, false)">정답 확인</button>
             <button class="action-btn next-btn" id="nextBtn2" style="display:none;" onclick="nextStage(3)">3단계로 이동 ➔</button>
         </div>
     </div>
 
     <div id="stage3" class="stage-container">
-        <div class="stage-title">🌳 3단계: 15과 문법 연습 (20문제)</div>
+        <div class="stage-title">🌳 3단계: 15과 문법 연습 (10문제 / 10분)</div>
         <div class="grammar-box">
             <h3>📖 활용 문법</h3>
             <ul>
@@ -110,13 +103,13 @@
         <div class="feedback" id="feedback3"></div>
         <div class="button-group">
             <button class="action-btn prev-btn" onclick="prevStage(2)">⬅ 이전으로</button>
-            <button class="action-btn submit-btn" id="submit3" onclick="checkAnswers(3)">정답 확인</button>
+            <button class="action-btn submit-btn" id="submit3" onclick="checkAnswers(3, false)">정답 확인</button>
             <button class="action-btn next-btn" id="nextBtn3" style="display:none;" onclick="nextStage(4)">4단계로 이동 ➔</button>
         </div>
     </div>
 
     <div id="stage4" class="stage-container">
-        <div class="stage-title">🔥 4단계: 종합 심화 응용 (20문제)</div>
+        <div class="stage-title">🔥 4단계: 종합 심화 응용 (20문제 / 15분)</div>
         <div class="grammar-box">
             <h3>⚠️ 주의 사항</h3>
             <p>13, 14, 15과의 모든 어휘와 문법이 섞여 있습니다. 대화의 흐름을 읽고 알맞게 완성하세요.</p>
@@ -125,7 +118,7 @@
         <div class="feedback" id="feedback4"></div>
         <div class="button-group">
             <button class="action-btn prev-btn" onclick="prevStage(3)">⬅ 이전으로</button>
-            <button class="action-btn submit-btn" id="submit4" onclick="checkAnswers(4)">최종 정답 확인</button>
+            <button class="action-btn submit-btn" id="submit4" onclick="checkAnswers(4, false)">최종 정답 확인</button>
             <button class="action-btn next-btn" id="nextBtn4" style="display:none;" onclick="showResultScreen()">🏆 결과 증명서 보기</button>
         </div>
     </div>
@@ -136,13 +129,13 @@
         <table class="score-table">
             <thead><tr><th>단계</th><th>정답 수</th></tr></thead>
             <tbody>
-                <tr><td>1단계 (어휘 종합)</td><td id="res1">0 / 20</td></tr>
-                <tr><td>2단계 (13, 14과 문법)</td><td id="res2">0 / 20</td></tr>
-                <tr><td>3단계 (15과 문법)</td><td id="res3">0 / 20</td></tr>
+                <tr><td>1단계 (어휘)</td><td id="res1">0 / 20</td></tr>
+                <tr><td>2단계 (13,14과 문법)</td><td id="res2">0 / 10</td></tr>
+                <tr><td>3단계 (15과 문법)</td><td id="res3">0 / 10</td></tr>
                 <tr><td>4단계 (종합 심화)</td><td id="res4">0 / 20</td></tr>
             </tbody>
         </table>
-        <div class="total-score">총 정답 수: <span id="totalRes" style="color:#e74c3c;">0</span> / 80</div>
+        <div class="total-score">총 정답 수: <span id="totalRes" style="color:#e74c3c;">0</span> / 60</div>
         <div style="margin-top: 20px; font-size: 1.1em; color: #7f8c8d; background: #ecf0f1; padding: 15px; border-radius: 8px;">
             📸 이 화면을 캡처하여 교수님께 증빙 자료로 제출해 주세요.
         </div>
@@ -150,7 +143,7 @@
     </div>
 
     <script>
-        /* 1. 복습 5 (13~15과) 데이터 정의 */
+        /* 1. 복습 5 데이터 정의 (총 60문제) */
         const quizData = {
             1: [
                 {q: "학교 안에 있어서 학생들이 살기 편한 집은 [ ]입니다.", a: "기숙사"},
@@ -184,17 +177,7 @@
                 {q: "여기에 주차[ ]? (하다 + -아/어도 되다)", a: "해도 돼요"},
                 {q: "극장에서 전화를 [ ]. (하다 + -(으)면 안 되다)", a: "하면 안 돼요"},
                 {q: "그 사람이 오늘 파티에 [ ]. (오다 + -(으)ㄹ지 모르겠다)", a: "올지 모르겠어요"},
-                {q: "한국어 공부가 [ ] 재미있어요. (어렵다 + -기는 하지만)", a: "어렵기는 하지만"},
-                {q: "길이 [ ] 지하철을 탑시다. (막히다 + -기 때문에)", a: "막히기 때문에"},
-                {q: "한글은 [ ]. (배우다 + -기(가) 쉽다)", a: "배우기가 쉬워요"},
-                {q: "한국 음식을 [ ]? (만들다 + -(으)ㄴ 적이 있다)", a: "만든 적이 있어요"},
-                {q: "비가 [ ] 파전을 먹었어요. (오다 + -았/었을 때)", a: "왔을 때"},
-                {q: "이 옷을 입어 [ ]? (보다 + -아/어도 되다)", a: "봐도 돼요"},
-                {q: "교실에서 밥을 [ ]. (먹다 + -(으)면 안 되다)", a: "먹으면 안 돼요"},
-                {q: "친구가 이 선물을 [ ]. (좋아하다 + -(으)ㄹ지 모르겠다)", a: "좋아할지 모르겠어요"},
-                {q: "방이 [ ] 혼자 살기에 괜찮아요. (작다 + -기는 하지만)", a: "작기는 하지만"},
-                {q: "주말[ ] 백화점에 사람이 많아요. (명사: 주말 + -이기 때문에)", a: "이기 때문에"},
-                {q: "자전거를 [ ]? (타다 + -(으)ㄴ 적이 있다)", a: "탄 적이 있어요"}
+                {q: "한국어 공부가 [ ] 재미있어요. (어렵다 + -기는 하지만)", a: "어렵기는 하지만"}
             ],
             3: [
                 {q: "날씨가 많이 [ ]. (따뜻하다 + -아/어지다)", a: "따뜻해졌어요"},
@@ -206,17 +189,7 @@
                 {q: "비행기를 [ ] 여권을 확인하세요. (타다 + -기 전에)", a: "타기 전에"},
                 {q: "대학교를 [ ] 취직을 할 거예요. (졸업하다 + -(으)ㄴ 후에)", a: "졸업한 후에"},
                 {q: "매일 운동해서 몸이 [ ]. (건강하다 + -아/어지다)", a: "건강해졌어요"},
-                {q: "친구 소개로 그 사람을 처음 [ ]. (만나다 + -게 되다)", a: "만나게 됐어요"},
-                {q: "밥을 [ ] 손을 씻으세요. (먹다 + -기 전에)", a: "먹기 전에"},
-                {q: "약을 [ ] 푹 쉬세요. (먹다 + -(으)ㄴ 후에)", a: "먹은 후에"},
-                {q: "물가가 작년보다 많이 [ ]. (비싸다 + -아/어지다)", a: "비싸졌어요"},
-                {q: "열심히 공부해서 장학금을 [ ]. (받다 + -게 되다)", a: "받게 됐어요"},
-                {q: "극장에 [ ] 표를 사야 해요. (들어가다 + -기 전에)", a: "들어가기 전에"},
-                {q: "수업이 [ ] 도서관에 가요. (끝나다 + -(으)ㄴ 후에)", a: "끝난 후에"},
-                {q: "일이 많아서 많이 [ ]. (바쁘다 + -아/어지다)", a: "바빠졌어요"},
-                {q: "다음 달부터 새로운 회사에서 [ ]. (일하다 + -게 되다)", a: "일하게 됐어요"},
-                {q: "한국에 [ ] 한국어를 배웠어요? (오다 + -기 전에)", a: "오기 전에"},
-                {q: "운동을 [ ] 샤워를 했어요. (하다 + -(으)ㄴ 후에)", a: "한 후에"}
+                {q: "친구 소개로 그 사람을 처음 [ ]. (만나다 + -게 되다)", a: "만나게 됐어요"}
             ],
             4: [
                 {q: "가: 내일 산에 갈까요? 나: 비가 [ ] 모르겠어요. (오다)", a: "올지"},
@@ -242,16 +215,15 @@
             ]
         };
 
-        /* 2. 상태 관리 (데이터 유지 핵심) */
+        /* 2. 상태 관리 (단계별 타이머 포함) */
         let quizState = {
             name: "",
             currentStage: 1,
-            timeLeft: 3000, // 전체 50분
             stages: {
-                1: { userAnswers: Array(20).fill(""), isSubmitted: false, score: 0 },
-                2: { userAnswers: Array(20).fill(""), isSubmitted: false, score: 0 },
-                3: { userAnswers: Array(20).fill(""), isSubmitted: false, score: 0 },
-                4: { userAnswers: Array(20).fill(""), isSubmitted: false, score: 0 }
+                1: { userAnswers: Array(20).fill(""), isSubmitted: false, score: 0, timeLeft: 900 }, // 15분
+                2: { userAnswers: Array(10).fill(""), isSubmitted: false, score: 0, timeLeft: 600 }, // 10분
+                3: { userAnswers: Array(10).fill(""), isSubmitted: false, score: 0, timeLeft: 600 }, // 10분
+                4: { userAnswers: Array(20).fill(""), isSubmitted: false, score: 0, timeLeft: 900 }  // 15분
             }
         };
 
@@ -267,7 +239,6 @@
             
             initQuestions(); 
             loadStage(1);    
-            startTimer();
         }
 
         // HTML 동적 생성
@@ -293,7 +264,7 @@
             quizState.stages[stage].userAnswers[idx] = value;
         }
 
-        // 페이지(단계) 로드 시 데이터 복구
+        // 페이지(단계) 로드 및 데이터 복구
         function loadStage(stage) {
             document.querySelectorAll('.stage-container').forEach(el => el.style.display = 'none');
             document.getElementById(`stage${stage}`).style.display = 'block';
@@ -305,8 +276,6 @@
             
             inputs.forEach((input, idx) => {
                 input.value = state.userAnswers[idx];
-                
-                // 기존 정답 UI 삭제
                 let existingAns = input.closest('.question-item').querySelector('.correct-answer');
                 if(existingAns) existingAns.remove();
 
@@ -331,22 +300,49 @@
             document.getElementById(`submit${stage}`).style.display = state.isSubmitted ? 'none' : 'block';
             document.getElementById(`nextBtn${stage}`).style.display = state.isSubmitted ? 'block' : 'none';
             window.scrollTo(0,0);
+
+            // 타이머 처리 (제출된 단계는 타이머 멈춤)
+            clearInterval(timerInterval);
+            if(state.isSubmitted) {
+                document.getElementById('timerDisplay').innerText = `남은 시간: 00:00 (채점 완료)`;
+                document.getElementById('timerDisplay').style.color = '#7f8c8d';
+            } else {
+                document.getElementById('timerDisplay').style.color = '#e74c3c';
+                startStageTimer(stage);
+            }
         }
 
         function nextStage(stage) { loadStage(stage); }
         function prevStage(stage) { loadStage(stage); }
 
-        // 채점 로직 (띄어쓰기 무시, 복수 정답 허용)
+        // 독립 타이머 함수
+        function startStageTimer(stage) {
+            timerInterval = setInterval(() => {
+                let state = quizState.stages[stage];
+                
+                state.timeLeft--;
+                let m = Math.floor(state.timeLeft / 60);
+                let s = state.timeLeft % 60;
+                document.getElementById('timerDisplay').innerText = `남은 시간: ${m < 10 ? '0':''}${m}:${s < 10 ? '0':''}${s}`;
+                
+                if(state.timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert(`⚠️ ${stage}단계 제한 시간이 종료되었습니다.\n현재까지 작성한 답안으로 자동 채점됩니다.`);
+                    checkAnswers(stage, true); // true = 강제 제출
+                }
+            }, 1000);
+        }
+
+        // 채점 유연성
         function checkCorrectness(stage, idx, val) {
             let userAns = val.replace(/\s+/g, '').trim();
             let correctAns = quizData[stage][idx].a.replace(/\s+/g, '').trim();
             
             if(userAns === correctAns) return true;
 
-            // 유연한 채점
             if(stage === 1) {
-                if(index === 2 && (userAns === "수도세")) return true;
-                if(index === 17 && (userAns === "높임말")) return true;
+                if(idx === 2 && (userAns === "수도세")) return true;
+                if(idx === 17 && (userAns === "높임말")) return true;
             }
             if(stage === 2 || stage === 4) {
                 if(correctAns.includes("기때문에") && userAns.includes("기때문에")) return true;
@@ -360,18 +356,23 @@
             return false;
         }
 
-        function checkAnswers(stage) {
+        // 채점 실행 (isForce=true면 빈칸 무시하고 채점)
+        function checkAnswers(stage, isForce) {
             const state = quizState.stages[stage];
             const inputs = document.querySelectorAll(`.q-input-${stage}`);
             
-            let allFilled = true;
-            inputs.forEach(input => { if(!input.value.trim()) allFilled = false; });
-            if(!allFilled) {
-                alert("모든 빈칸에 답을 입력해야 정답을 확인할 수 있습니다.");
-                return;
+            if (!isForce) {
+                let allFilled = true;
+                inputs.forEach(input => { if(!input.value.trim()) allFilled = false; });
+                if(!allFilled) {
+                    alert("모든 빈칸에 답을 입력해야 정답을 확인할 수 있습니다.");
+                    return;
+                }
             }
 
+            clearInterval(timerInterval); // 채점 시 타이머 정지
             let score = 0;
+            
             inputs.forEach((input, idx) => {
                 input.disabled = true;
                 const isCorrect = checkCorrectness(stage, idx, input.value);
@@ -392,26 +393,15 @@
             state.isSubmitted = true;
             state.score = score;
             
+            const totalQsForStage = quizData[stage].length;
             const fb = document.getElementById(`feedback${stage}`);
-            fb.innerText = `결과: 20문제 중 ${score}문제 정답!`;
+            fb.innerText = `결과: ${totalQsForStage}문제 중 ${score}문제 정답!`;
             fb.style.display = 'block';
             
             document.getElementById(`submit${stage}`).style.display = 'none';
             document.getElementById(`nextBtn${stage}`).style.display = 'block';
-        }
-
-        function startTimer() {
-            timerInterval = setInterval(() => {
-                quizState.timeLeft--;
-                let m = Math.floor(quizState.timeLeft / 60);
-                let s = quizState.timeLeft % 60;
-                document.getElementById('timerDisplay').innerText = `남은 시간: ${m < 10 ? '0':''}${m}:${s < 10 ? '0':''}${s}`;
-                if(quizState.timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    alert("시간이 종료되었습니다. 현재까지의 점수로 결과가 집계됩니다.");
-                    showResultScreen();
-                }
-            }, 1000);
+            document.getElementById('timerDisplay').innerText = `남은 시간: 00:00 (채점 완료)`;
+            document.getElementById('timerDisplay').style.color = '#7f8c8d';
         }
 
         // 캡처용 최종 화면
@@ -424,7 +414,8 @@
             document.getElementById('resultName').innerText = quizState.name;
             let total = 0;
             for(let s=1; s<=4; s++) {
-                document.getElementById(`res${s}`).innerText = `${quizState.stages[s].score} / 20`;
+                let stageMax = quizData[s].length;
+                document.getElementById(`res${s}`).innerText = `${quizState.stages[s].score} / ${stageMax}`;
                 total += quizState.stages[s].score;
             }
             document.getElementById('totalRes').innerText = total;
