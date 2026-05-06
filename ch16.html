@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ko" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google" content="notranslate">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>서울대 한국어 2B - 16과 마스터 팩</title>
+    <style>
+        /* 기본 스타일 */
+        body { font-family: 'Malgun Gothic', sans-serif; line-height: 1.6; padding: 20px; max-width: 850px; margin: 0 auto; background-color: #f4f6f8; color: #333; }
+        h1 { text-align: center; color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        
+        .action-btn { padding: 15px; color: white; border: none; border-radius: 8px; font-size: 1.1em; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .action-btn:hover { opacity: 0.9; }
+        .start-btn { background: #3498db; }
+        .next-btn { background: #e67e22; }
+        .prev-btn { background: #95a5a6; }
+        .submit-btn { background: #27ae60; }
+
+        /* 메인 메뉴 */
+        #main-menu { text-align: center; margin-top: 50px; }
+        .menu-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 20px; cursor: pointer; border: 3px solid transparent; transition: 0.3s; }
+        .menu-card:hover { border-color: #3498db; transform: translateY(-5px); }
+        .menu-card h2 { color: #2980b9; margin-top: 0; }
+        .menu-card p { color: #7f8c8d; font-size: 1.1em; }
+
+        /* 공통 컨테이너 */
+        .module-container { display: none; }
+        .info-box { background: #e8f4f8; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #3498db; }
+        .timer { color: #e74c3c; font-size: 1.3em; font-weight: bold; }
+        .stage-container { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: none; }
+        .stage-title { color: #fff; background-color: #2c3e50; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 1.2em; text-align: center;}
+        
+        /* 1부: 기존 퀴즈 스타일 */
+        .grammar-box { background-color: #fff3cd; border-left: 5px solid #ffc107; padding: 15px; margin-bottom: 20px; border-radius: 5px; color: #856404; }
+        .question-item { margin-bottom: 20px; font-size: 1.1em; border-bottom: 1px dashed #ddd; padding-bottom: 15px; }
+        .dialogue { background: #f1f2f6; padding: 15px; border-radius: 5px; margin-bottom: 5px; }
+        input[type="text"] { border: 1px solid #bdc3c7; border-radius: 4px; padding: 8px; font-size: 1em; width: 220px; font-weight: bold; color: #2c3e50; }
+        .correct-answer { color: #e74c3c; font-size: 0.9em; display: none; margin-top: 5px; font-weight: bold; }
+        .button-group { display: flex; gap: 10px; margin-top: 20px; }
+
+        /* 2부: 응용 퀴즈 스타일 (O/X) */
+        .ox-game-board { text-align: center; padding: 30px; background: #fff; border-radius: 12px; }
+        .hearts { font-size: 2em; margin-bottom: 15px; letter-spacing: 5px; }
+        .ox-question { font-size: 1.5em; font-weight: bold; margin: 20px 0; min-height: 80px; display: flex; align-items: center; justify-content: center; background: #f8f9fa; padding: 20px; border-radius: 8px; }
+        .ox-btn-group { display: flex; justify-content: center; gap: 20px; margin-top: 20px; }
+        .ox-btn { width: 100px; height: 100px; font-size: 3em; font-weight: bold; border-radius: 20px; border: none; cursor: pointer; color: white; transition: 0.2s; }
+        .btn-o { background: #3498db; }
+        .btn-x { background: #e74c3c; }
+        .ox-btn:hover { transform: scale(1.05); }
+
+        /* 2부: 응용 퀴즈 스타일 (메신저) */
+        .chat-container { background: #b2c7d9; padding: 20px; border-radius: 15px; max-width: 400px; margin: 0 auto; height: 450px; display: flex; flex-direction: column; }
+        .chat-history { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px; }
+        .chat-bubble { max-width: 75%; padding: 12px 16px; border-radius: 15px; font-size: 1.05em; line-height: 1.4; position: relative; }
+        .npc-bubble { background: #fff; align-self: flex-start; border-top-left-radius: 0; }
+        .user-bubble { background: #ffeb33; align-self: flex-end; border-top-right-radius: 0; }
+        .chat-choices { display: flex; flex-direction: column; gap: 10px; }
+        .choice-btn { background: #fff; border: 1px solid #ddd; padding: 12px; border-radius: 8px; text-align: left; font-size: 1em; cursor: pointer; transition: 0.2s; }
+        .choice-btn:hover { background: #f1f2f6; border-color: #3498db; }
+
+        /* 2부: 응용 퀴즈 스타일 (퍼즐) */
+        .puzzle-board { background: #fff; padding: 20px; border-radius: 12px; text-align: center; }
+        .puzzle-sentence { font-size: 1.2em; font-weight: bold; margin-bottom: 20px; color: #2c3e50; }
+        .drop-zone { min-height: 60px; background: #f8f9fa; border: 2px dashed #bdc3c7; border-radius: 8px; padding: 15px; margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; }
+        .word-bank { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 15px; background: #ecf0f1; border-radius: 8px; min-height: 60px; }
+        .word-block { background: #3498db; color: white; padding: 10px 15px; border-radius: 20px; font-size: 1.1em; font-weight: bold; cursor: pointer; user-select: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: transform 0.1s; }
+        .word-block:active { transform: scale(0.95); }
+
+    </style>
+</head>
+<body>
+
+    <h1>🚀 16과 마스터 팩: 우리 집에 올 수 있어요?</h1>
+    
+    <div id="main-menu">
+        <div class="menu-card" onclick="startModule('original')">
+            <h2>📖 1. 기본 학습 (어휘/문법 퀴즈)</h2>
+            <p>16과의 어휘와 4가지 핵심 문법을 4단계(총 80문제)로 꼼꼼하게 복습합니다.<br><em>*기존 방식의 빈칸 채우기 형식입니다.</em></p>
+        </div>
+        <div class="menu-card" onclick="startModule('app')">
+            <h2>🎮 2. 심화 응용 (인터랙티브 게임)</h2>
+            <p>스피드 O/X 타임어택, 메신저 대화, 문장 퍼즐 등<br>3단계의 게임형 퀴즈로 실전 감각을 기릅니다.</p>
+        </div>
+    </div>
+
+    <div id="module-original" class="module-container">
+        <div id="start-screen-1" style="text-align: center; background:white; padding:30px; border-radius:10px;">
+            <h2>기본 학습을 시작합니다!</h2>
+            <input type="text" id="studentName1" placeholder="이름 입력 (예: 마이클)" style="margin-bottom:15px;"><br>
+            <button class="action-btn start-btn" onclick="startOriginalQuiz()">퀴즈 시작하기</button>
+            <br><br><button class="action-btn prev-btn" onclick="backToMenu()">메인 메뉴로</button>
+        </div>
+
+        <div class="info-box" id="infoBox1" style="display:none;">
+            <div id="stageIndicator1">학생: <span id="displayName1"></span> | <span id="currentStageName1">1단계</span></div>
+            <div class="timer" id="timerDisplay1">남은 시간: 15:00</div>
+        </div>
+
+        <div id="orig-stage1" class="stage-container">
+            <div class="stage-title">🌱 1단계: 16과 어휘 총정리 (20문제 / 15분)</div>
+            <div id="q-container-1"></div>
+            <div class="button-group">
+                <button class="action-btn submit-btn" id="submit1" onclick="checkOriginal(1)">정답 확인</button>
+                <button class="action-btn next-btn" id="nextBtn1" style="display:none;" onclick="loadOrigStage(2)">2단계로 ➔</button>
+            </div>
+        </div>
+        <div id="orig-stage2" class="stage-container">
+            <div class="stage-title">🌿 2단계: 문법 연습 [V-아/어 놓다, N 대신] (20문제 / 15분)</div>
+            <div id="q-container-2"></div>
+            <div class="button-group">
+                <button class="action-btn prev-btn" onclick="loadOrigStage(1)">⬅ 이전</button>
+                <button class="action-btn submit-btn" id="submit2" onclick="checkOriginal(2)">정답 확인</button>
+                <button class="action-btn next-btn" id="nextBtn2" style="display:none;" onclick="loadOrigStage(3)">3단계로 ➔</button>
+            </div>
+        </div>
+        <div id="orig-stage3" class="stage-container">
+            <div class="stage-title">🌳 3단계: 문법 연습 [V-(으)ㄹ까 하다, A/V-(으)ㄹ 테니까] (20문제 / 15분)</div>
+            <div id="q-container-3"></div>
+            <div class="button-group">
+                <button class="action-btn prev-btn" onclick="loadOrigStage(2)">⬅ 이전</button>
+                <button class="action-btn submit-btn" id="submit3" onclick="checkOriginal(3)">정답 확인</button>
+                <button class="action-btn next-btn" id="nextBtn3" style="display:none;" onclick="loadOrigStage(4)">4단계로 ➔</button>
+            </div>
+        </div>
+        <div id="orig-stage4" class="stage-container">
+            <div class="stage-title">🔥 4단계: 종합 심화 응용 (20문제 / 15분)</div>
+            <div id="q-container-4"></div>
+            <div class="button-group">
+                <button class="action-btn prev-btn" onclick="loadOrigStage(3)">⬅ 이전</button>
+                <button class="action-btn submit-btn" id="submit4" onclick="checkOriginal(4)">최종 확인</button>
+                <button class="action-btn next-btn" id="nextBtn4" style="display:none;" onclick="showOrigResult()">🏆 결과 보기</button>
+            </div>
+        </div>
+
+        <div id="result-screen-1" style="display:none; text-align:center; background:white; padding:30px; border-radius:10px;">
+            <h2>🏆 기본 학습 완료 증명서</h2>
+            <p>캡처하여 제출해 주세요!</p>
+            <h3 id="finalName1" style="color:#2980b9;"></h3>
+            <p>1단계: <span id="r1"></span>/20 | 2단계: <span id="r2"></span>/20 | 3단계: <span id="r3"></span>/20 | 4단계: <span id="r4"></span>/20</p>
+            <h3 style="color:#e74c3c;">총점: <span id="rTotal"></span> / 80</h3>
+            <button class="action-btn next-btn" onclick="backToMenu()">메인 메뉴로 돌아가기</button>
+        </div>
+    </div>
+
+    <div id="module-app" class="module-container">
+        <div id="start-screen-2" style="text-align: center; background:white; padding:30px; border-radius:10px;">
+            <h2>심화 응용 게임을 시작합니다!</h2>
+            <input type="text" id="studentName2" placeholder="이름 입력" style="margin-bottom:15px;"><br>
+            <button class="action-btn start-btn" onclick="startAppQuiz()">게임 시작하기</button>
+            <br><br><button class="action-btn prev-btn" onclick="backToMenu()">메인 메뉴로</button>
+        </div>
+
+        <div id="app-stage1" class="stage-container">
+            <div class="stage-title">⏱️ 1단계: 서바이벌 O/X 퀴즈 (목숨 3개)</div>
+            <div class="ox-game-board">
+                <div class="hearts" id="ox-hearts">❤️❤️❤️</div>
+                <div class="ox-question" id="ox-text">문제가 여기에 표시됩니다.</div>
+                <div class="ox-btn-group" id="ox-buttons">
+                    <button class="ox-btn btn-o" onclick="checkOx('O')">O</button>
+                    <button class="ox-btn btn-x" onclick="checkOx('X')">X</button>
+                </div>
+                <button id="ox-next-stage" class="action-btn next-btn" style="display:none; width:100%; margin-top:20px;" onclick="loadAppStage(2)">2단계 (메신저 대화)로 이동 ➔</button>
+            </div>
+        </div>
+
+        <div id="app-stage2" class="stage-container">
+            <div class="stage-title">💬 2단계: 톡톡 메신저 대화</div>
+            <div class="chat-container">
+                <div class="chat-history" id="chat-history">
+                    </div>
+                <div class="chat-choices" id="chat-choices">
+                    </div>
+            </div>
+            <button id="chat-next-stage" class="action-btn next-btn" style="display:none; width:100%; margin-top:20px;" onclick="loadAppStage(3)">3단계 (문장 퍼즐)로 이동 ➔</button>
+        </div>
+
+        <div id="app-stage3" class="stage-container">
+            <div class="stage-title">🧩 3단계: 드래그 & 드롭 문장 조립</div>
+            <div class="puzzle-board">
+                <p>💡 아래의 단어 블록을 클릭하여 올바른 문장을 만드세요.</p>
+                <div class="drop-zone" id="puzzle-answer-box"></div>
+                <div class="word-bank" id="puzzle-word-bank"></div>
+                <div class="button-group">
+                    <button class="action-btn prev-btn" onclick="resetPuzzle()">초기화</button>
+                    <button class="action-btn submit-btn" onclick="checkPuzzle()">정답 확인</button>
+                </div>
+                <button id="puzzle-next-btn" class="action-btn next-btn" style="display:none; width:100%; margin-top:20px;" onclick="showAppResult()">🏆 응용 퀴즈 수료증 보기</button>
+            </div>
+        </div>
+
+        <div id="result-screen-2" style="display:none; text-align:center; background:white; padding:30px; border-radius:10px; border: 4px solid #f1c40f;">
+            <h2>🏆 16과 심화 응용 마스터 증명서</h2>
+            <p>축하합니다! 모든 인터랙티브 미션을 완료했습니다.</p>
+            <h3 id="finalName2" style="color:#e67e22; font-size:1.5em;"></h3>
+            <p>✅ 1단계 O/X 서바이벌 통과<br>✅ 2단계 상황별 대화 성공<br>✅ 3단계 문장 구조 퍼즐 완성</p>
+            <div style="margin-top: 20px; font-size: 1em; color: #7f8c8d; background: #ecf0f1; padding: 15px; border-radius: 8px;">
+                📸 이 화면을 캡처하여 교수님께 제출해 주세요.
+            </div>
+            <button class="action-btn start-btn" onclick="backToMenu()" style="margin-top:20px;">메인 메뉴로 돌아가기</button>
+        </div>
+    </div>
+
+    <script>
+        // 공통 네비게이션
+        function backToMenu() {
+            document.querySelectorAll('.module-container').forEach(el => el.style.display = 'none');
+            document.getElementById('main-menu').style.display = 'block';
+            clearInterval(origTimer);
+        }
+        function startModule(type) {
+            document.getElementById('main-menu').style.display = 'none';
+            document.getElementById(`module-${type}`).style.display = 'block';
+        }
+
+        /* -------------------------------------------------------------------------
+           1부: 기본 학습 (기존 로직)
+        ------------------------------------------------------------------------- */
+        const origData={
+            1: [{q:"설날에 어른들께 큰 절을 하는 것 [기본형]",a:"세배를 하다"},{q:"설날에 먹는 떡으로 만든 국",a:"떡국"},{q:"추석에 먹는 반달 모양의 떡",a:"송편"},{q:"산소에 가서 인사하는 것",a:"성묘를 하다"},{q:"명절 아침 조상님께 음식 차려 인사하는 것",a:"차례를 지내다"},{q:"명절에 한국 전통 옷을 입는 것",a:"한복을 입다"},{q:"명절 전통 놀이",a:"윷놀이"},{q:"자기가 태어난 곳으로 가는 것",a:"고향에 가다"},{q:"그릇을 씻는 것",a:"설거지를 하다"},{q:"더러운 옷을 기계에 넣고 빠는 것",a:"세탁기를 돌리다"},{q:"기계로 먼지를 없애는 것",a:"청소기를 돌리다"},{q:"걸레로 방 바닥을 깨끗하게 하는 것",a:"방을 닦다"},{q:"재료를 사러 시장에 가는 것",a:"장을 보다"},{q:"물건들을 제자리에 놓는 것",a:"정리를 하다"},{q:"쌀로 만든 달콤한 음료수",a:"식혜"},{q:"달콤한 한국의 전통 과자",a:"한과"},{q:"고기, 채소를 넣고 부친 전",a:"빈대떡"},{q:"새해 아침 어른들께 하는 인사 [명사]",a:"세배"},{q:"방에 물건이 많아요. [  ]을/를 해야겠어요.",a:"정리"},{q:"떡국을 먹고 [  ]을/를 입어요.",a:"한복"}],
+            2: [{q:"친구가 오기 전에 방을 미리 [청소하다]",a:"청소해 놓았어요"},{q:"내일 먹을 빵을 미리 [사다]",a:"사 놓았어요"},{q:"기차표를 한 달 전에 [예매하다]",a:"예매해 놓았어요"},{q:"더워서 창문을 [열다]",a:"열어 놓았어요"},{q:"중요한 약속이라 달력에 [쓰다]",a:"써 놓았어요"},{q:"내일 입을 옷을 [준비하다]",a:"준비해 놓았어요"},{q:"음식을 미리 [만들다]",a:"만들어 놓았어요"},{q:"호텔을 미리 [예약하다]",a:"예약해 놓았어요"},{q:"저는 커피 [  ] 녹차를 마실게요.",a:"대신"},{q:"오늘은 밥 [  ] 빵을 먹었어요.",a:"대신"},{q:"여권 [  ] 신분증을 주세요.",a:"대신"},{q:"치마 [  ] 바지를 입었어요.",a:"대신"},{q:"고기 [  ] 채소를 드세요.",a:"대신"},{q:"지하철 [  ] 버스를 탔어요.",a:"대신"},{q:"짐을 다 [싸다]",a:"싸 놓았어요"},{q:"비가 올 것 같아 창문을 [닫다]",a:"닫아 놓았어요"},{q:"컴퓨터 전원을 [켜다]",a:"켜 놓았어요"},{q:"책 [  ] 영화를 봤어요.",a:"대신"},{q:"엄마 [  ] 아빠가 요리했어요.",a:"대신"},{q:"주말 [  ] 평일에 만납시다.",a:"대신"}],
+            3: [{q:"제주도로 여행을 [가다+의도]",a:"갈까 해요"},{q:"집에서 [쉬다+의도]",a:"쉴까 해요"},{q:"불고기를 [만들다+의도]",a:"만들까 해요"},{q:"새로 [사다+의도]",a:"살까 해요"},{q:"머리를 [자르다+의도]",a:"자를까 해요"},{q:"영화를 [보다+의도]",a:"볼까 해요"},{q:"책을 [선물하다+의도]",a:"선물할까 해요"},{q:"외식을 [하다+의도]",a:"할까 해요"},{q:"커피를 [사다+의지] 잠시 기다리세요.",a:"살 테니까"},{q:"방을 [치우다+의지] 설거지를 해주세요.",a:"치울 테니까"},{q:"전화를 [받다+의지] 식사하세요.",a:"받을 테니까"},{q:"내일 날씨가 [춥다+추측] 따뜻하게 입으세요.",a:"추울 테니까"},{q:"길이 [막히다+추측] 지하철을 타세요.",a:"막힐 테니까"},{q:"사진을 [찍다+의지] 웃어보세요.",a:"찍을 테니까"},{q:"시험이 [어렵다+추측] 열심히 공부하세요.",a:"어려울 테니까"},{q:"비밀을 꼭 [지키다+의지] 걱정 마세요.",a:"지킬 테니까"},{q:"내일은 많이 [바쁘다+추측] 오늘 만납시다.",a:"바쁠 테니까"},{q:"오늘은 일찍 [자다+의도]",a:"잘까 해요"},{q:"내일 [도와주다+의지] 걱정 마세요.",a:"도와줄 테니까"},{q:"한국어로 [말하다+의지] 잘 들어보세요.",a:"말할 테니까"}],
+            4: [{q:"가: 설날에 뭐 해요? 나: [  ]을/를 해요.(큰절)",a:"세배"},{q:"비가 오니 [  ]을/를 부쳐 먹을까 해요.(전)",a:"빈대떡"},{q:"식사 후에 제가 [  ]을/를 할 테니까 쉬세요.",a:"설거지"},{q:"음식을 다 [만들다+완료유지]",a:"만들어 놓았어요"},{q:"커피 [  ] 녹차 주세요.",a:"대신"},{q:"주말에 영화를 [보다+의도]",a:"볼까 해요"},{q:"제가 밥을 [사다+의지] 영화는 지민씨가 보여주세요.",a:"살 테니까"},{q:"아까 [  ]을/를 돌렸어요.(먼지기계)",a:"청소기"},{q:"가족들과 같이 [  ]을/를 빚어 먹어요.",a:"송편"},{q:"기차표 [  ] 버스표를 샀어요.",a:"대신"},{q:"짐을 다 [싸다+완료유지]",a:"싸 놓았어요"},{q:"밖이 [춥다+추측] 따뜻하게 입으세요.",a:"추울 테니까"},{q:"설날 아침에는 [  ]을/를 먹어요.",a:"떡국"},{q:"기차를 타고 [가다+의도]",a:"갈까 해요"},{q:"제가 걸레로 방을 [닦다+의지]",a:"닦을 테니까"},{q:"제가 에어컨을 미리 [켜다+완료유지]",a:"켜 놓았어요"},{q:"냉장고에 시원한 [  ]이/가 있어요.(음료)",a:"식혜"},{q:"길이 많이 [막히다+추측] 일찍 출발하세요.",a:"막힐 테니까"},{q:"옷걸이에 [준비하다+완료유지]",a:"준비해 놓았어요"},{q:"치마 [  ] 바지를 입고 가세요.",a:"대신"}]
+        };
+
+        let origState = { name:"", current:1, scores:[0,0,0,0], answers:Array(5).fill().map(()=>Array(20).fill('')), submitted:[false,false,false,false,false] };
+        let origTimer;
+        let origTimeLeft = 900;
+
+        function initOrigQs() {
+            for(let s=1; s<=4; s++){
+                let html = '';
+                origData[s].forEach((item, i) => {
+                    html += `<div class="question-item"><div class="dialogue">${i+1}. ${item.q}</div>
+                             <input type="text" id="o-q-${s}-${i}" oninput="origState.answers[${s}][${i}]=this.value" placeholder="정답"></div>`;
+                });
+                document.getElementById(`q-container-${s}`).innerHTML = html;
+            }
+        }
+
+        function startOriginalQuiz() {
+            let n = document.getElementById('studentName1').value.trim();
+            if(!n) return alert("이름을 입력하세요!");
+            origState.name = n;
+            document.getElementById('displayName1').innerText = n;
+            document.getElementById('start-screen-1').style.display = 'none';
+            document.getElementById('infoBox1').style.display = 'flex';
+            initOrigQs();
+            loadOrigStage(1);
+        }
+
+        function loadOrigStage(s) {
+            document.querySelectorAll('#module-original .stage-container').forEach(e => e.style.display='none');
+            document.getElementById(`orig-stage${s}`).style.display = 'block';
+            document.getElementById('currentStageName1').innerText = `${s}단계`;
+            origState.current = s;
+            
+            // UI 복원
+            origData[s].forEach((_, i) => {
+                let inp = document.getElementById(`o-q-${s}-${i}`);
+                inp.value = origState.answers[s][i];
+                if(origState.submitted[s]) inp.disabled = true;
+            });
+
+            if(origState.submitted[s]) {
+                document.getElementById(`submit${s}`).style.display = 'none';
+                document.getElementById(`nextBtn${s}`).style.display = 'block';
+                document.getElementById('timerDisplay1').innerText = "채점 완료";
+                clearInterval(origTimer);
+            } else {
+                origTimeLeft = 900; 
+                clearInterval(origTimer);
+                origTimer = setInterval(()=>{
+                    origTimeLeft--;
+                    let m = Math.floor(origTimeLeft/60), sec = origTimeLeft%60;
+                    document.getElementById('timerDisplay1').innerText = `남은 시간: ${m}:${sec<10?'0':''}${sec}`;
+                    if(origTimeLeft<=0) checkOriginal(s);
+                }, 1000);
+            }
+            window.scrollTo(0,0);
+        }
+
+        function checkOriginal(s) {
+            clearInterval(origTimer);
+            let score = 0;
+            origData[s].forEach((item, i) => {
+                let inp = document.getElementById(`o-q-${s}-${i}`);
+                let ans = inp.value.replace(/\s+/g,'').trim();
+                let correct = item.a.replace(/\s+/g,'').trim();
+                
+                // 유연한 채점 로직 (기존과 동일)
+                let isRight = (ans === correct);
+                if(s==1 && (ans=="윷놀이를하다"||ans=="세배하기")) isRight=true;
+                if((s==2||s==4) && correct.includes("놓았어요") && ans===correct.replace("놓았어요","놨어요")) isRight=true;
+                if((s==2||s==4) && correct.includes("대신에") && ans===correct.replace("대신에","대신")) isRight=true;
+                if((s==3||s==4) && correct.includes("테니까") && ans===correct.replace("테니까","텐데")) isRight=true;
+
+                inp.disabled = true;
+                if(isRight) {
+                    inp.style.backgroundColor = '#d4edda';
+                    score++;
+                } else {
+                    inp.style.backgroundColor = '#f8d7da';
+                    inp.outerHTML += `<div style="color:red; font-size:0.9em; font-weight:bold;">정답: ${item.a}</div>`;
+                }
+            });
+            origState.scores[s-1] = score;
+            origState.submitted[s] = true;
+            document.getElementById(`submit${s}`).style.display = 'none';
+            document.getElementById(`nextBtn${s}`).style.display = 'block';
+            document.getElementById('timerDisplay1').innerText = "채점 완료";
+            alert(`${s}단계 완료! ${score}개 맞았습니다.`);
+        }
+
+        function showOrigResult() {
+            document.querySelectorAll('#module-original .stage-container, #infoBox1').forEach(e=>e.style.display='none');
+            document.getElementById('result-screen-1').style.display = 'block';
+            document.getElementById('finalName1').innerText = origState.name;
+            let tot=0;
+            for(let i=1; i<=4; i++){
+                document.getElementById(`r${i}`).innerText = origState.scores[i-1];
+                tot += origState.scores[i-1];
+            }
+            document.getElementById('rTotal').innerText = tot;
+        }
+
+        /* -------------------------------------------------------------------------
+           2부: 심화 응용 
+        ------------------------------------------------------------------------- */
+        let appState = { name:"" };
+
+        function startAppQuiz() {
+            let n = document.getElementById('studentName2').value.trim();
+            if(!n) return alert("이름을 입력하세요!");
+            appState.name = n;
+            document.getElementById('start-screen-2').style.display = 'none';
+            loadAppStage(1);
+        }
+
+        function loadAppStage(s) {
+            document.querySelectorAll('#module-app .stage-container').forEach(e=>e.style.display='none');
+            document.getElementById(`app-stage${s}`).style.display = 'block';
+            if(s==1) initOxGame();
+            if(s==2) initChatGame();
+            if(s==3) initPuzzleGame();
+            window.scrollTo(0,0);
+        }
+
+        // --- App 1: O/X 서바이벌 ---
+        const oxData = [
+            {q: "내일 비가 올 테니까 우산을 가져가세요.", a: "O"},
+            {q: "여권 대신에 신분증을 주셔도 됩니다.", a: "O"},
+            {q: "방을 닦아 놓았으니까 들어오세요.", a: "O"},
+            {q: "밥을 먹을까 해서 빵을 먹었어요.", a: "X", exp: "밥 대신에 빵을 먹었어요"},
+            {q: "창문을 열을 테니까 조금만 기다리세요.", a: "X", exp: "열 테니까 (ㄹ 불규칙)"}
+        ];
+        let appHearts = 3, appOxIdx = 0;
+
+        function initOxGame() {
+            appHearts = 3; appOxIdx = 0;
+            document.getElementById('ox-hearts').innerText = "❤️❤️❤️";
+            document.getElementById('ox-buttons').style.display = 'flex';
+            document.getElementById('ox-next-stage').style.display = 'none';
+            showOxQuestion();
+        }
+
+        function showOxQuestion() {
+            if(appOxIdx >= oxData.length) {
+                document.getElementById('ox-text').innerText = "🎉 축하합니다! 모든 O/X 문제를 통과했습니다.";
+                document.getElementById('ox-buttons').style.display = 'none';
+                document.getElementById('ox-next-stage').style.display = 'block';
+                return;
+            }
+            document.getElementById('ox-text').innerText = `Q${appOxIdx+1}. ${oxData[appOxIdx].q}`;
+        }
+
+        function checkOx(ans) {
+            if(oxData[appOxIdx].a === ans) {
+                // 정답
+                appOxIdx++;
+                showOxQuestion();
+            } else {
+                // 오답
+                appHearts--;
+                let hStr = "";
+                for(let i=0; i<3; i++) hStr += (i<appHearts) ? "❤️" : "🖤";
+                document.getElementById('ox-hearts').innerText = hStr;
+                
+                let msg = `틀렸습니다! \n${oxData[appOxIdx].exp ? '해설: '+oxData[appOxIdx].exp : ''}`;
+                alert(msg);
+
+                if(appHearts <= 0) {
+                    alert("하트를 모두 잃었습니다. 처음부터 다시 도전하세요!");
+                    initOxGame();
+                } else {
+                    appOxIdx++;
+                    showOxQuestion();
+                }
+            }
+        }
+
+        // --- App 2: 메신저 대화 ---
+        const chatData = [
+            {npc: "이번 명절에 고향에 내려가요?", choices: ["네, 기차표를 미리 예매해 놓았어요.", "네, 기차표 대신에 버스를 탈까 해요.", "네, 고향에 갈 테니까요."], ans: 0},
+            {npc: "집이 정말 깨끗하네요! 청소했어요?", choices: ["네, 청소기 대신에 방을 닦았어요.", "네, 손님이 오실 테니까 미리 청소해 놓았어요.", "네, 청소를 할까 해요."], ans: 1},
+            {npc: "오늘 저녁에 같이 불고기 먹을래요?", choices: ["불고기를 먹을 테니까요.", "불고기를 만들어 놓았어요.", "불고기 대신에 빈대떡은 어때요?"], ans: 2}
+        ];
+        let appChatIdx = 0;
+
+        function initChatGame() {
+            appChatIdx = 0;
+            document.getElementById('chat-history').innerHTML = '';
+            document.getElementById('chat-next-stage').style.display = 'none';
+            renderChatNPC();
+        }
+
+        function renderChatNPC() {
+            if(appChatIdx >= chatData.length) {
+                document.getElementById('chat-choices').innerHTML = '';
+                document.getElementById('chat-history').innerHTML += `<div class="chat-bubble npc-bubble">대화가 성공적으로 끝났습니다! 수고하셨어요.😊</div>`;
+                document.getElementById('chat-next-stage').style.display = 'block';
+                return;
+            }
+            let data = chatData[appChatIdx];
+            document.getElementById('chat-history').innerHTML += `<div class="chat-bubble npc-bubble">${data.npc}</div>`;
+            
+            let choicesHtml = '';
+            data.choices.forEach((c, i) => {
+                choicesHtml += `<button class="choice-btn" onclick="checkChat(${i})">${c}</button>`;
+            });
+            document.getElementById('chat-choices').innerHTML = choicesHtml;
+            document.getElementById('chat-history').scrollTop = document.getElementById('chat-history').scrollHeight;
+        }
+
+        function checkChat(cIdx) {
+            let data = chatData[appChatIdx];
+            if(cIdx === data.ans) {
+                document.getElementById('chat-history').innerHTML += `<div class="chat-bubble user-bubble">${data.choices[cIdx]}</div>`;
+                document.getElementById('chat-choices').innerHTML = '';
+                appChatIdx++;
+                setTimeout(renderChatNPC, 800); // 0.8초 딜레이 후 다음 NPC 말풍선
+            } else {
+                alert("자연스러운 대답이 아닙니다. 다시 선택해 보세요!");
+            }
+        }
+
+        // --- App 3: 문장 퍼즐 ---
+        const puzzleData = [
+            {words: ["제가", "방을", "치울 테니까", "설거지를", "해 주세요."], ans: "제가 방을 치울 테니까 설거지를 해 주세요."},
+            {words: ["이번", "주말에는", "집에서", "쉴까", "해요."], ans: "이번 주말에는 집에서 쉴까 해요."},
+            {words: ["여권", "대신에", "운전면허증을", "주셔도", "돼요."], ans: "여권 대신에 운전면허증을 주셔도 돼요."}
+        ];
+        let appPuzzleIdx = 0;
+        let selectedWords = [];
+        let bankWords = [];
+
+        function initPuzzleGame() {
+            appPuzzleIdx = 0;
+            document.getElementById('puzzle-next-btn').style.display = 'none';
+            loadPuzzleLevel();
+        }
+
+        function loadPuzzleLevel() {
+            if(appPuzzleIdx >= puzzleData.length) {
+                document.querySelector('.puzzle-board').innerHTML = `
+                    <h2 style="color:#27ae60;">🎉 모든 퍼즐을 완성했습니다!</h2>
+                    <button class="action-btn next-btn" style="width:100%; margin-top:20px;" onclick="showAppResult()">🏆 응용 퀴즈 수료증 보기</button>
+                `;
+                return;
+            }
+            selectedWords = [];
+            bankWords = [...puzzleData[appPuzzleIdx].words].sort(() => Math.random() - 0.5);
+            renderPuzzleBoxes();
+        }
+
+        function renderPuzzleBoxes() {
+            let zHtml = '', bHtml = '';
+            selectedWords.forEach((w, i) => {
+                zHtml += `<div class="word-block" onclick="moveToBank(${i})">${w}</div>`;
+            });
+            bankWords.forEach((w, i) => {
+                bHtml += `<div class="word-block" onclick="moveToZone(${i})">${w}</div>`;
+            });
+            document.getElementById('puzzle-answer-box').innerHTML = zHtml;
+            document.getElementById('puzzle-word-bank').innerHTML = bHtml;
+        }
+
+        function moveToZone(i) {
+            selectedWords.push(bankWords[i]);
+            bankWords.splice(i, 1);
+            renderPuzzleBoxes();
+        }
+
+        function moveToBank(i) {
+            bankWords.push(selectedWords[i]);
+            selectedWords.splice(i, 1);
+            renderPuzzleBoxes();
+        }
+
+        function resetPuzzle() {
+            selectedWords = [];
+            bankWords = [...puzzleData[appPuzzleIdx].words].sort(() => Math.random() - 0.5);
+            renderPuzzleBoxes();
+        }
+
+        function checkPuzzle() {
+            if(bankWords.length > 0) {
+                alert("단어를 모두 사용하여 문장을 완성해 주세요!");
+                return;
+            }
+            let userAns = selectedWords.join(' ');
+            if(userAns === puzzleData[appPuzzleIdx].ans) {
+                alert("정답입니다! 👏");
+                appPuzzleIdx++;
+                loadPuzzleLevel();
+            } else {
+                alert("문장 순서가 틀렸습니다. 다시 조립해 보세요!");
+            }
+        }
+
+        function showAppResult() {
+            document.querySelectorAll('#module-app .stage-container, #start-screen-2').forEach(e=>e.style.display='none');
+            document.getElementById('result-screen-2').style.display = 'block';
+            document.getElementById('finalName2').innerText = appState.name;
+        }
+
+    </script>
+</body>
+</html>
