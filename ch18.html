@@ -153,22 +153,22 @@
     <script>
         /* [1부 데이터] 18과 어휘(15) / 문법1(10) / 문법2(10) / 종합(5) */
         const quizData = {
-            1: [
-                {q:"봄이 오면 나무에 예쁜 [  ]. (기본형: blossom)", a:"꽃이 피다"},
-                {q:"가을이 되면 산이 빨갛고 노랗게 [  ]. (기본형: autumn leaves)", a:"단풍이 들다"},
-                {q:"비가 많이 오고 덥고 습한 여름 기간을 말해요. [  ]. (기본형: rainy season starts)", a:"장마가 시작되다"},
-                {q:"여름에 강한 바람과 함께 큰 비가 오는 것. [  ]. (기본형: typhoon comes)", a:"태풍이 오다"},
-                {q:"겨울에 날씨가 아주 추워서 물이 딱딱해져요. [  ]. (기본형: ice freezes)", a:"얼음이 얼다"},
-                {q:"겨울에 하늘에서 하얀 것이 떨어져요. [  ]. (기본형: snow falls)", a:"눈이 내리다"},
-                {q:"가을에 날씨가 조금 차가워요. [  ]. (기본형: chilly)", a:"쌀쌀하다"},
-                {q:"가을이 되면 나무에서 이것이 떨어져요. [  ]. (기본형: leaves fall)", a:"나뭇잎이 떨어지다"},
-                {q:"겨울에 온도가 0도 아래로 떨어져요. [  ]. (기본형: drop below zero)", a:"기온이 영하로 내려가다"},
-                {q:"고향에 있는 가족들이 아주 많이 보고 싶어요. [  ]. (기본형: miss)", a:"그립다"},
-                {q:"친한 친구와 헤어져서 마음이 슬프고 안타까워요. [  ]. (기본형: sad/sorry to part)", a:"아쉽다"},
-                {q:"친구와 오래 만나서 마음이 아주 가까워졌어요. [  ]. (기본형: become attached)", a:"정이 들다"},
-                {q:"옛날에 한 실수 때문에 지금 마음이 안 좋아요. [  ]. (기본형: regret)", a:"후회가 되다"},
-                {q:"제주도 여행이 너무 즐거워서 잊을 수 없어요. [  ]. (기본형: remain in memory)", a:"기억에 남다"},
-                {q:"비가 안 오고 날씨가 말라 있어요. [  ]. (기본형: dry)", a:"건조하다"}
+            1: [ // 1단계: -아요/어요/해요 형태로 활용
+                {q:"봄이 오면 나무에 예쁜 [  ].", a:"꽃이 피어요"},
+                {q:"가을이 되면 산이 빨갛고 노랗게 [  ].", a:"단풍이 들어요"},
+                {q:"여름이 되어서 비가 매일 오는 [  ].", a:"장마가 시작돼요"},
+                {q:"여름에 강한 바람과 함께 큰 [  ].", a:"태풍이 와요"},
+                {q:"겨울에 날씨가 아주 추워서 물에 [  ].", a:"얼음이 얼어요"},
+                {q:"겨울에는 하늘에서 하얀 [  ].", a:"눈이 내려요"},
+                {q:"가을이 되면 날씨가 조금 춥고 [  ].", a:"쌀쌀해요"},
+                {q:"가을에는 바람이 불어서 나무에서 [  ].", a:"나뭇잎이 떨어져요"},
+                {q:"겨울에는 날씨가 너무 추워서 [  ].", a:"기온이 영하로 내려가요"},
+                {q:"고향에 있는 가족들이 아주 많이 [  ].", a:"그리워요"},
+                {q:"친한 친구가 이사를 가서 마음이 정말 [  ].", a:"아쉬워요"},
+                {q:"친구와 오랫동안 매일 만나서 아주 [  ].", a:"정이 들어요"},
+                {q:"공부를 안 하고 시험을 봐서 너무 [  ].", a:"후회가 돼요"},
+                {q:"제주도 여행이 너무 즐거워서 계속 [  ].", a:"기억에 남아요"},
+                {q:"비가 안 오고 날씨가 말라서 아주 [  ].", a:"건조해요"}
             ],
             2: [
                 {q:"한국에 (오다) [  ] 벌써 1년이 되었어요.", a:"온 지"},
@@ -219,10 +219,12 @@
         }
 
         function loadBasicStage(s) {
-            let titles = {1:"어휘(기본형 쓰기)", 2:"-은/ㄴ 지, -이나", 3:"반말(서술어 기본형)", 4:"종합 평가"};
+            let titles = {1:"어휘 ('-아요/어요/해요' 형태로 쓰기)", 2:"-은/ㄴ 지, -이나", 3:"반말(서술어 기본형)", 4:"종합 평가"};
+            let hintMsg = s===1 ? "※ 알맞은 어휘를 '-아요/어요/해요' 형태로 활용하여 빈칸을 채우세요." : "※ 괄호 안의 힌트를 보고 빈칸을 채우세요.";
+            
             let h = `<div class="stage-container" style="display:block">
                 <div class="stage-title">${s}단계: ${titles[s]}</div>
-                <p style="color:#7f8c8d; text-align:center; margin-bottom:15px;">※ 괄호 안의 힌트를 보고 빈칸을 채우세요.</p>
+                <p style="color:#7f8c8d; text-align:center; margin-bottom:15px;">${hintMsg}</p>
                 <div id="q-box-${s}"></div>
                 <div style="text-align:center;">
                     <button class="action-btn submit-btn" onclick="checkBasic(${s})">제출 및 채점</button>
@@ -256,7 +258,15 @@
                 let userAns = inp.value.trim().replace(/\s/g,'');
                 let correctAns = d.a.replace(/\s/g,'');
                 
-                if(userAns === correctAns) {
+                let isCorrect = (userAns === correctAns);
+                
+                // 1단계 예외 처리 (장마가 시작돼요 / 시작되어요 등)
+                if(s === 1) {
+                    if(correctAns === "장마가시작돼요" && userAns === "장마가시작되어요") isCorrect = true;
+                    if(correctAns === "후회가돼요" && userAns === "후회가되어요") isCorrect = true;
+                }
+                
+                if(isCorrect) {
                     inp.style.backgroundColor='#d4edda'; 
                     inp.style.borderColor='#27ae60';
                     score++;
