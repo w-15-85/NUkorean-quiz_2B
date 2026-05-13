@@ -22,16 +22,19 @@
         .stage-container { background: white; padding: 25px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: none; }
         .stage-title { background-color: #2c3e50; color: #fff; padding: 12px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-size: 1.2em; }
         .question-item { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed #eee; font-size: 1.1em; }
-        .hint-text { color: #27ae60; font-weight: bold; font-size: 0.9em; margin-left: 10px; }
-        input[type="text"] { border: 2px solid #ddd; border-radius: 6px; padding: 6px 10px; font-size: 1em; width: 150px; outline: none; font-weight: bold; color: #2c3e50; text-align: center; }
+        
+        /* 다국어 힌트 스타일 */
+        .lang-hint { display: block; font-size: 0.85em; color: #16a085; margin-bottom: 5px; font-weight: normal; }
+        .lang-hint span { color: #7f8c8d; font-size: 0.9em; margin-right: 5px; }
+        
+        input[type="text"] { border: 2px solid #ddd; border-radius: 6px; padding: 6px 10px; font-size: 1em; width: 160px; outline: none; font-weight: bold; color: #2c3e50; text-align: center; }
         input[type="text"]:focus { border-color: #27ae60; }
         .correct-answer { color: #e74c3c; font-weight: bold; margin-top: 5px; font-size: 0.9em; display: none; }
         
-        /* O/X 및 게임 디자인 생략 (이전과 동일하게 유지) */
-        .ox-game-board { text-align: center; padding: 20px; }
+        /* 2단계 공통 디자인 */
+        .ox-game-board, .puzzle-board { text-align: center; padding: 20px; }
         .ox-question { font-size: 1.4em; font-weight: bold; min-height: 100px; display: flex; align-items: center; justify-content: center; background: #e8f4f8; border-radius: 12px; margin-bottom: 20px; padding: 20px; color: #2c3e50; }
         .ox-btn { width: 80px; height: 80px; font-size: 2em; border-radius: 50%; border: none; cursor: pointer; color: white; margin: 0 15px; transition: 0.1s; }
-        .ox-btn:active { transform: scale(0.9); }
         .btn-o { background: #3498db; } .btn-x { background: #e74c3c; }
         .chat-container { background: #abc1d1; padding: 15px; border-radius: 15px; max-width: 450px; margin: 0 auto; height: 500px; display: flex; flex-direction: column; }
         .chat-history { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 10px; }
@@ -40,9 +43,8 @@
         .user-bubble { background: #ffeb33; align-self: flex-end; border-top-right-radius: 0; }
         .chat-choices { display: flex; flex-direction: column; gap: 8px; padding-top: 10px; }
         .choice-btn { background: #fff; border: none; padding: 12px; border-radius: 10px; text-align: left; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 0.95em; }
-        .puzzle-board { text-align: center; }
         .drop-zone { min-height: 80px; border: 2px dashed #27ae60; background: #fafafa; border-radius: 10px; padding: 15px; margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; }
-        .word-bank { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 15px; background: #e9ecef; border-radius: 10px; min-height: 80px; }
+        .word-bank { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 15px; background: #e9ecef; border-radius: 10px; }
         .word-block { background: #27ae60; color: white; padding: 10px 18px; border-radius: 20px; cursor: pointer; font-weight: bold; }
         .report-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         .report-table th, .report-table td { border: 1px solid #ddd; padding: 12px; text-align: center; }
@@ -57,7 +59,7 @@
     <div id="main-menu">
         <div class="menu-card" onclick="startModule('basic')">
             <h2>📝 1단계: 기본 핵심 체크</h2>
-            <p>필수 어휘 괄호 채우기 & 문법 연습 (총 40문제)</p>
+            <p>다국어 힌트 어휘 & 문법 활용 연습 (총 40문제)</p>
         </div>
         <div class="menu-card" onclick="startModule('app')">
             <h2>🎮 2단계: 응용 미션 게임</h2>
@@ -99,55 +101,57 @@
     </div>
 
     <script>
-        /* [개편된 1단계 어휘 데이터] h: 옆에 표시될 힌트 단어 */
+        /* [1단계 어휘] h: 중국어(간체) / v: 베트남어 힌트
+           ans: 복수 정답 배열 (피어요/펴요 등)
+        */
         const quizData = {
             1: [
-                {q:"봄이 오면 나무에 예쁜 꽃이 [ ].", a:"피어요", h:"피다"},
-                {q:"가을이 되면 산에 빨갛게 [ ]이 들어요.", a:"단풍", h:"단풍"},
-                {q:"여름에는 비가 계속 오는 [ ]가 시작돼요.", a:"장마", h:"장마"},
-                {q:"여름에 강한 바람과 함께 큰 [ ]이 와요.", a:"태풍", h:"태풍"},
-                {q:"날씨가 아주 추워서 물에 [ ]이 얼어요.", a:"얼음", h:"얼음"},
-                {q:"겨울에는 하늘에서 하얀 [ ]이 내려요.", a:"눈", h:"눈"},
-                {q:"가을이 되면 날씨가 조금 [ ].", a:"쌀쌀해요", h:"쌀쌀하다"},
-                {q:"바람이 불어서 나무에서 [ ]이 떨어져요.", a:"나뭇잎", h:"나뭇잎"},
-                {q:"추워서 기온이 [ ]로 내려가요.", a:"영하", h:"영하"},
-                {q:"고향에 있는 가족들이 아주 많이 [ ].", a:"그리워요", h:"그립다"},
-                {q:"친한 친구와 헤어져서 마음이 정말 [ ].", a:"아쉬워요", h:"아쉽다"},
-                {q:"친구와 오랫동안 매일 만나서 [ ]이 들었어요.", a:"정", h:"정"},
-                {q:"공부를 안 하고 시험을 봐서 [ ]가 돼요.", a:"후회", h:"후회"},
-                {q:"제주도 여행이 너무 즐거워서 [ ]에 남아요.", a:"기억", h:"기억"},
-                {q:"비가 안 오고 날씨가 말라서 아주 [ ].", a:"건조해요", h:"건조하다"}
+                {q:"봄이 오면 나무에 예쁜 꽃이 [ ].", ans:["피어요", "펴요"], h:"绽放 (피다)", v:"nở (피다)"},
+                {q:"가을이 되면 산에 빨갛게 [ ]이 들어요.", ans:["단풍"], h:"枫叶", v:"lá phong"},
+                {q:"여름에는 비가 계속 오는 [ ]가 시작돼요.", ans:["장마"], h:"梅雨", v:"mùa mưa"},
+                {q:"여름에 강한 바람과 함께 큰 [ ]이 와요.", ans:["태풍"], h:"台风", v:"bão"},
+                {q:"날씨가 아주 추워서 물에 [ ]이 얼어요.", ans:["얼음"], h:"冰", v:"đá"},
+                {q:"겨울에는 하늘에서 하얀 [ ]이 내려요.", ans:["눈"], h:"雪", v:"tuyết"},
+                {q:"가을이 되면 날씨가 조금 [ ].", ans:["쌀쌀해요"], h:"凉飕飕 (쌀쌀하다)", v:"se se lạnh (쌀쌀하다)"},
+                {q:"바람이 불어서 나무에서 [ ]이 떨어져요.", ans:["나뭇잎"], h:"树叶", v:"lá cây"},
+                {q:"추워서 기온이 [ ]로 내려가요.", ans:["영하"], h:"零下", v:"dưới 0 độ"},
+                {q:"고향에 있는 가족들이 아주 많이 [ ].", ans:["그리워요"], h:"想念 (그립다)", v:"nhớ (그립다)"},
+                {q:"친한 친구와 헤어져서 마음이 정말 [ ].", ans:["아쉬워요"], h:"可惜 (아쉽다)", v:"tiếc nuối (아쉽다)"},
+                {q:"친구와 오랫동안 매일 만나서 [ ]이 들었어요.", ans:["정"], h:"情分", v:"tình cảm"},
+                {q:"공부를 안 하고 시험을 봐서 [ ]가 돼요.", ans:["후회"], h:"后悔", v:"hối hận"},
+                {q:"제주도 여행이 너무 즐거워서 [ ]에 남아요.", ans:["기억"], h:"记忆", v:"ký ức"},
+                {q:"비가 안 오고 날씨가 말라서 아주 [ ].", ans:["건조해요"], h:"干燥 (건조하다)", v:"khô hanh (건조하다)"}
             ],
             2: [
-                {q:"한국에 (오다) [  ] 벌써 1년이 되었어요.", a:"온 지"},
-                {q:"담배를 (끊다) [  ] 한 달이 되었습니다.", a:"끊은 지"},
-                {q:"그 친구를 (만나다) [  ] 꽤 오래되었어요.", a:"만난 지"},
-                {q:"한국어를 (공부하다) [  ] 6개월이 됐어요.", a:"공부한 지"},
-                {q:"피곤해서 어제 10시간[  ] 잤어요.", a:"이나"},
-                {q:"사과를 혼자서 10개[  ] 먹었어요.", a:"이나"},
-                {q:"책이 재미있어서 5권[  ] 읽었어요.", a:"이나"},
-                {q:"커피를 하루에 4잔[  ] 마셔요.", a:"이나"},
-                {q:"밥을 먹은 [  ] 3시간이 지났어요.", a:"지"},
-                {q:"컴퓨터 게임을 5시간[  ] 했어요.", a:"이나"}
+                {q:"한국에 (오다) [  ] 벌써 1년이 되었어요.", ans:["온 지"]},
+                {q:"담배를 (끊다) [  ] 한 달이 되었습니다.", ans:["끊은 지"]},
+                {q:"그 친구를 (만나다) [  ] 꽤 오래되었어요.", ans:["만난 지"]},
+                {q:"한국어를 (공부하다) [  ] 6개월이 됐어요.", ans:["공부한 지"]},
+                {q:"피곤해서 어제 10시간[  ] 잤어요.", ans:["이나"]},
+                {q:"사과를 혼자서 10개[  ] 먹었어요.", ans:["이나"]},
+                {q:"책이 재미있어서 5권[  ] 읽었어요.", ans:["이나"]},
+                {q:"커피를 하루에 4잔[  ] 마셔요.", ans:["이나"]},
+                {q:"밥을 먹은 [  ] 3시간이 지났어요.", ans:["지"]},
+                {q:"컴퓨터 게임을 5시간[  ] 했어요.", ans:["이나"]}
             ],
             3: [
-                {q:"나는 매일 아침 일찍 (일어나다) [  ].", a:"일어난다"},
-                {q:"오늘 날씨가 참 (좋다) [  ].", a:"좋다"},
-                {q:"내 친구는 지금 음악을 (듣다) [  ].", a:"듣는다"},
-                {q:"이 책은 정말 (재미있다) [  ].", a:"재미있다"},
-                {q:"나는 서울대학교 학생(이다) [  ].", a:"이다"},
-                {q:"주말에는 보통 영화를 (보다) [  ].", a:"본다"},
-                {q:"한국 음식은 아주 (맵다) [  ].", a:"맵다"},
-                {q:"내 고향은 바다가 (아름답다) [  ].", a:"아름답다"},
-                {q:"동생은 밥을 아주 많이 (먹다) [  ].", a:"먹는다"},
-                {q:"어제 산 가방이 참 (예쁘다) [  ].", a:"예쁘다"}
+                {q:"나는 매일 아침 일찍 (일어나다) [  ].", ans:["일어난다"]},
+                {q:"오늘 날씨가 참 (좋다) [  ].", ans:["좋다"]},
+                {q:"내 친구는 지금 음악을 (듣다) [  ].", ans:["듣는다"]},
+                {q:"이 책은 정말 (재미있다) [  ].", ans:["재미있다"]},
+                {q:"나는 서울대학교 학생(이다) [  ].", ans:["이다"]},
+                {q:"주말에는 보통 영화를 (보다) [  ].", ans:["본다"]},
+                {q:"한국 음식은 아주 (맵다) [  ].", ans:["맵다"]},
+                {q:"내 고향은 바다가 (아름답다) [  ].", ans:["아름답다"]},
+                {q:"동생은 밥을 아주 많이 (먹다) [  ].", ans:["먹는다"]},
+                {q:"어제 산 가방이 참 (예쁘다) [  ].", ans:["예쁘다"]}
             ],
             4: [
-                {q:"태풍이 (오다) [  ] 지 일주일이 지났어요.", a:"온"},
-                {q:"시간이 참 빨리 (지나가다) [  ].", a:"지나간다"},
-                {q:"물을 하루에 10잔[  ] 마셔요.", a:"이나"},
-                {q:"어릴 때 친구가 많이 (그립다) [  ].", a:"그립다"},
-                {q:"방 청소를 (하다) [  ] 지 2주일이나 됐어요.", a:"한"}
+                {q:"태풍이 (오다) [  ] 지 일주일이 지났어요.", ans:["온"]},
+                {q:"시간이 참 빨리 (지나가다) [  ].", ans:["지나간다"]},
+                {q:"물을 하루에 10잔[  ] 마셔요.", ans:["이나"]},
+                {q:"어릴 때 친구가 많이 (그립다) [  ].", ans:["그립다"]},
+                {q:"방 청소를 (하다) [  ] 지 2주일이나 됐어요.", ans:["한"]}
             ]
         };
 
@@ -166,8 +170,8 @@
         }
 
         function loadBasicStage(s) {
-            let titles = {1:"어휘 (괄호 채우기)", 2:"-은/ㄴ 지, -이나", 3:"반말(서술어 기본형)", 4:"종합 평가"};
-            let hintMsg = s===1 ? "※ 힌트 단어를 보고 괄호 안에 알맞은 형태를 쓰세요." : "※ 괄호 안의 힌트를 보고 빈칸을 채우세요.";
+            let titles = {1:"어휘 (다국어 힌트 활용)", 2:"-은/ㄴ 지, -이나", 3:"반말(서술어 기본형)", 4:"종합 평가"};
+            let hintMsg = s===1 ? "※ 중국어/베트남어 힌트를 보고 알맞은 형태로 쓰세요." : "※ 괄호 안의 힌트를 보고 빈칸을 채우세요.";
             
             let h = `<div class="stage-container" style="display:block">
                 <div class="stage-title">${s}단계: ${titles[s]}</div>
@@ -181,17 +185,24 @@
             document.getElementById('basic-stage-area').innerHTML = h;
             
             quizData[s].forEach((d, i) => {
-                let questionText = d.q;
+                let questionHTML = '';
                 if(s === 1) {
-                    // 1단계만 힌트 단어 별도 표시
-                    questionText = `${d.q} <span class="hint-text">(힌트: ${d.h})</span>`;
+                    questionHTML = `
+                        <div class="question-item">
+                            <span class="lang-hint"><span>[CN]</span> ${d.h} | <span>[VN]</span> ${d.v}</span>
+                            ${i+1}. ${d.q}<br>
+                            <input type="text" id="ans-${s}-${i}" autocomplete="off">
+                            <div id="c-ans-${s}-${i}" class="correct-answer">정답 예시: ${d.ans[0]}</div>
+                        </div>`;
+                } else {
+                    questionHTML = `
+                        <div class="question-item">
+                            ${i+1}. ${d.q}<br>
+                            <input type="text" id="ans-${s}-${i}" autocomplete="off">
+                            <div id="c-ans-${s}-${i}" class="correct-answer">정답: ${d.ans[0]}</div>
+                        </div>`;
                 }
-                document.getElementById('q-box-'+s).innerHTML += `
-                    <div class="question-item">
-                        ${i+1}. ${questionText}<br>
-                        <input type="text" id="ans-${s}-${i}" autocomplete="off">
-                        <div id="c-ans-${s}-${i}" class="correct-answer">정답: ${d.a}</div>
-                    </div>`;
+                document.getElementById('q-box-'+s).innerHTML += questionHTML;
             });
             window.scrollTo(0,0);
         }
@@ -200,16 +211,25 @@
             let score = 0;
             quizData[s].forEach((d, i) => {
                 let inp = document.getElementById(`ans-${s}-${i}`);
-                let userAns = inp.value.trim().replace(/\s/g,'');
-                let correctAns = d.a.replace(/\s/g,'');
+                let userVal = inp.value.trim().replace(/\s/g,'');
                 
-                let isCorrect = (userAns === correctAns);
+                // 복수 정답 체크 로직 (공백 제거 후 비교)
+                let isCorrect = d.ans.some(correctVal => {
+                    return userVal === correctVal.replace(/\s/g,'');
+                });
                 
-                // 유연한 채점 (시작돼요/되어요 등)
-                if(s === 1) {
-                    if(correctAns === "후회" && userAns === "후회가") isCorrect = true; // 문맥상 허용
+                // 추가 유연 채점 로직 (돼요/되어요 등 공통 축약형 자동 처리)
+                if(!isCorrect) {
+                    let commonSubs = {
+                        "돼요": "되어요", "되어요": "돼요",
+                        "펴요": "피어요", "피어요": "펴요",
+                        "시작돼요": "시작되어요", "시작되어요": "시작돼요"
+                    };
+                    if(commonSubs[userVal]) {
+                        isCorrect = d.ans.some(cv => cv.replace(/\s/g,'') === commonSubs[userVal]);
+                    }
                 }
-                
+
                 if(isCorrect) {
                     inp.style.backgroundColor='#d4edda'; 
                     score++;
@@ -238,19 +258,38 @@
             document.getElementById('totalScore1').innerText = total;
         }
 
-        /* 2단계 로직은 이전과 동일하게 유지 (코드 생략 방지 위해 핵심 구조 유지) */
+        /* 2단계: 응용 미션 공통 로직 */
         let appUserName = "";
-        const oxPool = [{q:"'꽃이 피다'는 봄에 볼 수 있는 모습이다.", a:"O"}, {q:"'얼음이 얼다'는 더울 때 쓴다.", a:"X"}, {q:"'온 지 1년'은 1년 전 도착을 의미한다.", a:"O"}, {q:"'그립다'는 보고 싶은 마음이다.", a:"O"}];
+        const oxPool = [
+            {q:"가을에 산이 빨갛게 변하는 것을 '단풍이 들다'라고 한다.", a:"O"},
+            {q:"'피어요'의 줄임말은 '펴요'이며 둘 다 맞는 말이다.", a:"O"},
+            {q:"여름에 비가 오랫동안 오는 시기는 '태풍'이다.", a:"X"},
+            {q:"'한국에 온 지 1년'은 1년 전에 한국에 왔다는 뜻이다.", a:"O"},
+            {q:"형용사 '좋다'의 반말은 '좋는다'이다.", a:"X"}
+        ];
         let curOx = [], oxIdx = 0;
         function runApp() { appUserName = document.getElementById('userName2').value; document.getElementById('app-start').style.display='none'; nextMission(1); }
         function nextMission(s) { 
             document.querySelectorAll('#module-app .stage-container').forEach(e=>e.style.display='none');
             document.getElementById('app-s'+s).style.display='block';
             if(s===1) { curOx = oxPool; oxIdx=0; showOx(); }
+            if(s===2) initChat();
+            if(s===3) initPuzzle();
         }
-        function showOx() { if(oxIdx>=curOx.length){document.getElementById('ox-finish-btn').style.display='block'; return;} document.getElementById('ox-q-text').innerText = curOx[oxIdx].q; }
+        function showOx() { 
+            if(oxIdx>=curOx.length){
+                document.getElementById('ox-q-text').innerText = "미션 1 완료!";
+                document.getElementById('ox-finish-btn').style.display='block'; 
+                return;
+            } 
+            document.getElementById('ox-q-text').innerText = curOx[oxIdx].q; 
+        }
         function checkOx(a) { if(curOx[oxIdx].a===a){oxIdx++; showOx();} else alert("다시 생각해보세요!"); }
-        // (나머지 메신저, 퍼즐 로직은 이전 버전과 동일하므로 교수님께서 기존 코드를 그대로 활용하시면 됩니다.)
+
+        /* 메신저 & 퍼즐 생략 부분 (이전과 동일한 완성형 로직 적용 가능) */
+        function initChat() { document.getElementById('chat-finish-btn').style.display='block'; }
+        function initPuzzle() { document.getElementById('p-finish-btn').style.display='block'; }
+        function finishApp() { document.getElementById('app-s3').style.display='none'; document.getElementById('app-result').style.display='block'; document.getElementById('resName2').innerText = appUserName + " 학생,";}
     </script>
 </body>
 </html>
