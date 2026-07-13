@@ -1,102 +1,228 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>서울대학교 한국어 2B 온라인 퀴즈</title>
-    <style>
-        body {
-            font-family: 'Malgun Gothic', sans-serif;
-            background-color: #f4f6f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            background-color: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            width: 100%;
-            max-width: 500px;
-            text-align: center;
-        }
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 5px;
-        }
-        .subtitle {
-            color: #7f8c8d;
-            margin-bottom: 30px;
-            font-size: 1.1em;
-        }
-        .menu-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .menu-btn {
-            display: block;
-            background-color: #3498db;
-            color: white;
-            text-decoration: none;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: bold;
-            transition: background-color 0.2s;
-        }
-        .menu-btn:hover {
-            background-color: #2980b9;
-        }
-        .review-btn {
-            background-color: #1abc9c;
-            margin-bottom: 10px; /* 복습 단원 후 약간의 여백 */
-        }
-        .review-btn:hover {
-            background-color: #16a085;
-        }
-        .divider {
-            height: 1px;
-            background-color: #eee;
-            margin: 30px 0;
-        }
-        .footer {
-            color: #95a5a6;
-            font-size: 0.9em;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>🎓 서울대학교 한국어 2B</h1>
-        <p class="subtitle">온라인 퀴즈 목록</p>
-        
-        <div class="menu-list">
-            <a href="ch10.html" class="menu-btn">📖 10과 종합 퀴즈 풀기</a>
-            <a href="ch11.html" class="menu-btn">📖 11과 종합 퀴즈 풀기</a>
-            <a href="ch12.html" class="menu-btn">📖 12과 종합 퀴즈 풀기</a>
-            <a href="review4.html" class="menu-btn review-btn">📝 복습 4 종합 퀴즈 풀기</a>
-            
-            <a href="ch13.html" class="menu-btn">📖 13과 종합 퀴즈 풀기</a>
-            <a href="ch14.html" class="menu-btn">📖 14과 종합 퀴즈 풀기</a>
-            <a href="ch15.html" class="menu-btn">📖 15과 종합 퀴즈 풀기</a>
-            <a href="review5.html" class="menu-btn review-btn">📝 복습 5 종합 퀴즈 풀기</a>
-            
-            <a href="ch16.html" class="menu-btn">📖 16과 종합 퀴즈 풀기</a>
-            <a href="ch17.html" class="menu-btn">📖 17과 종합 퀴즈 풀기</a>
-            <a href="ch18.html" class="menu-btn">📖 18과 종합 퀴즈 풀기</a>
-            <a href="review6.html" class="menu-btn review-btn">📝 복습 6 종합 퀴즈 풀기</a>
-        </div>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>서울대학교 한국어 2B - 단원별 퀴즈 & 복습</title>
+  <style>
+    body {
+      font-family: 'Malgun Gothic', sans-serif;
+      background-color: #f4f7f6;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-        <div class="divider"></div>
-        <div class="footer">
-            문제가 있으면 담당 조교나 교수님께 문의하세요.<br><br>
-            ⚙️ 관리자 페이지
-        </div>
-    </div>
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 760px;
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 5px;
+    }
+
+    p.subtitle {
+      color: #7f8c8d;
+      margin-bottom: 25px;
+      font-size: 1.1em;
+    }
+
+    .quiz-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .quiz-grid li {
+      width: 100%;
+    }
+
+    .quiz-btn {
+      display: block;
+      padding: 15px;
+      background-color: #3498db;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 1.05em;
+      font-weight: bold;
+      transition: background-color 0.3s, transform 0.2s;
+      line-height: 1.35;
+    }
+
+    .quiz-btn:hover {
+      background-color: #2980b9;
+      transform: translateY(-2px);
+    }
+
+    .review-btn {
+      background-color: #e67e22;
+    }
+
+    .review-btn:hover {
+      background-color: #d35400;
+    }
+
+    .disabled-btn {
+      background-color: #bdc3c7;
+      color: #ecf0f1;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .disabled-btn:hover {
+      background-color: #bdc3c7;
+      transform: none;
+    }
+
+    .section-divider {
+      grid-column: 1 / -1;
+      border-top: 1px solid #ecf0f1;
+      margin: 10px 0 0;
+      padding-top: 10px;
+    }
+
+    .footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #95a5a6;
+      border-top: 1px solid #ecf0f1;
+      padding-top: 20px;
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 28px 20px;
+      }
+
+      .quiz-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-divider {
+        grid-column: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🎓 서울대학교 한국어 2B</h1>
+  <p class="subtitle">단원별 문법 연습 및 종합 복습</p>
+
+  <ul class="quiz-grid">
+    <!-- 10~12과 / 복습 4 -->
+    <li>
+      <a href="ch10.html" class="quiz-btn">
+        📖 10과 퀴즈<br>
+        <small>뭐 먹을래?</small>
+      </a>
+    </li>
+
+    <li>
+      <a href="ch11.html" class="quiz-btn">
+        📖 11과 퀴즈<br>
+        <small>운동을 좀 해 보는 게 어때요?</small>
+      </a>
+    </li>
+
+    <li>
+      <a href="ch12.html" class="quiz-btn">
+        📖 12과 퀴즈<br>
+        <small>저는 좀 조용한 편이에요</small>
+      </a>
+    </li>
+
+    <li>
+      <a href="rev4.html" class="quiz-btn review-btn">
+        🔥 복습 4<br>
+        <small>10~12과</small>
+      </a>
+    </li>
+
+    <!-- 13~15과 / 복습 5 -->
+    <li class="section-divider"></li>
+
+    <li>
+      <a class="quiz-btn disabled-btn">
+        📖 13과 퀴즈<br>
+        <small>주변이 조용해서 살기 좋아요</small>
+      </a>
+    </li>
+
+    <li>
+      <a class="quiz-btn disabled-btn">
+        📖 14과 퀴즈<br>
+        <small>여기서 사진을 찍어도 돼요?</small>
+      </a>
+    </li>
+
+    <li>
+      <a class="quiz-btn disabled-btn">
+        📖 15과 퀴즈<br>
+        <small>한국 생활에 익숙해졌어요</small>
+      </a>
+    </li>
+
+    <li>
+      <a class="quiz-btn review-btn disabled-btn">
+        🔥 복습 5<br>
+        <small>13~15과</small>
+      </a>
+    </li>
+
+    <!-- 16~18과 / 복습 6 -->
+    <li class="section-divider"></li>
+
+    <li>
+      <a class="quiz-btn disabled-btn">
+        📖 16과 퀴즈<br>
+        <small>설날에는 밥 대신 떡국을 먹어요</small>
+      </a>
+    </li>
+
+    <li>
+      <a class="quiz-btn disabled-btn">
+        📖 17과 퀴즈<br>
+        <small>비행기를 놓칠 뻔했어요</small>
+      </a>
+    </li>
+
+    <li>
+      <a class="quiz-btn disabled-btn">
+        📖 18과 퀴즈<br>
+        <small>한국에 온 지 벌써 6개월이 되었어요</small>
+      </a>
+    </li>
+
+    <li>
+      <a class="quiz-btn review-btn disabled-btn">
+        🔥 복습 6<br>
+        <small>16~18과</small>
+      </a>
+    </li>
+  </ul>
+
+  <div class="footer">
+    <p>※ 본 퀴즈는 자가 학습용이며 성적이 전송되지 않습니다.</p>
+    <p>※ 회색 버튼은 아직 준비 중인 단원입니다.</p>
+  </div>
+</div>
+
 </body>
 </html>
