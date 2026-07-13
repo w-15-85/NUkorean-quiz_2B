@@ -1,947 +1,194 @@
 <!DOCTYPE html>
 <html lang="ko" translate="no">
 <head>
-    <meta charset="UTF-8">
-    <meta name="google" content="notranslate">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>서울대 한국어 2B - 10과 마스터 퀴즈</title>
-
-    <style>
-        :root {
-            --main-green: #27ae60;
-            --dark-green: #1e8449;
-            --main-blue: #3498db;
-            --dark-blue: #2980b9;
-            --main-orange: #e67e22;
-            --dark-orange: #d35400;
-            --main-red: #e74c3c;
-            --dark-red: #c0392b;
-            --dark-navy: #2c3e50;
-            --gray: #95a5a6;
-            --light-gray: #ecf0f1;
-            --page-bg: #f4f7f6;
-            --white: #ffffff;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            max-width: 950px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: var(--page-bg);
-            color: #333;
-            font-family:
-                "Malgun Gothic",
-                "Apple SD Gothic Neo",
-                Arial,
-                sans-serif;
-            line-height: 1.65;
-        }
-
-        h1 {
-            margin: 10px 0 8px;
-            padding-bottom: 14px;
-            border-bottom: 4px solid var(--main-green);
-            color: var(--dark-navy);
-            text-align: center;
-            font-size: 2rem;
-        }
-
-        button,
-        input {
-            font-family: inherit;
-        }
-
-        button:focus-visible,
-        input:focus-visible {
-            outline: 3px solid rgba(52, 152, 219, 0.35);
-            outline-offset: 2px;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .notice {
-            margin: 18px 0 24px;
-            padding: 15px 18px;
-            border-left: 6px solid var(--main-green);
-            border-radius: 8px;
-            background: var(--white);
-            box-shadow: 0 2px 9px rgba(0, 0, 0, 0.05);
-            color: #455a64;
-        }
-
-        .notice strong {
-            color: var(--dark-green);
-        }
-
-        /* ──────────────────────────
-           메인 메뉴
-        ────────────────────────── */
-
-        .menu-card {
-            margin: 22px 0;
-            padding: 30px;
-            border: 3px solid transparent;
-            border-radius: 16px;
-            background: var(--white);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            cursor: pointer;
-            transition:
-                border-color 0.2s,
-                transform 0.2s,
-                box-shadow 0.2s;
-        }
-
-        .menu-card:hover {
-            border-color: var(--main-green);
-            transform: translateY(-3px);
-            box-shadow: 0 7px 18px rgba(0, 0, 0, 0.11);
-        }
-
-        .menu-card h2 {
-            margin: 0 0 10px;
-            color: var(--main-green);
-        }
-
-        .menu-card p {
-            margin: 0;
-            color: #607d8b;
-            font-size: 1.05rem;
-        }
-
-        /* ──────────────────────────
-           공통 버튼
-        ────────────────────────── */
-
-        .button-row {
-            margin-top: 25px;
-            text-align: center;
-        }
-
-        .action-btn {
-            margin: 5px;
-            padding: 12px 23px;
-            border: none;
-            border-radius: 9px;
-            color: var(--white);
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition:
-                opacity 0.2s,
-                transform 0.15s;
-        }
-
-        .action-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-
-        .start-btn {
-            background: var(--main-green);
-        }
-
-        .submit-btn {
-            background: var(--dark-blue);
-        }
-
-        .next-btn {
-            background: var(--main-orange);
-        }
-
-        .back-btn {
-            background: var(--gray);
-        }
-
-        .retry-btn {
-            background: var(--dark-red);
-        }
-
-        /* ──────────────────────────
-           단계별 화면
-        ────────────────────────── */
-
-        .stage-container {
-            display: none;
-            margin: 22px 0;
-            padding: 28px;
-            border-radius: 14px;
-            background: var(--white);
-            box-shadow: 0 3px 13px rgba(0, 0, 0, 0.07);
-        }
-
-        .stage-title {
-            margin-bottom: 12px;
-            padding: 14px 18px;
-            border-radius: 9px;
-            background: var(--dark-navy);
-            color: var(--white);
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
-        .pass-note {
-            margin-bottom: 22px;
-            padding: 11px 15px;
-            border: 1px solid #c9ebd7;
-            border-radius: 8px;
-            background: #eefaf3;
-            color: var(--dark-green);
-            text-align: center;
-            font-weight: bold;
-        }
-
-        /* ──────────────────────────
-           일반 문제
-        ────────────────────────── */
-
-        .question-item {
-            margin-bottom: 24px;
-            padding-bottom: 20px;
-            border-bottom: 1px dashed #d5dbdb;
-        }
-
-        .question-item:last-child {
-            border-bottom: none;
-        }
-
-        .question-text {
-            margin-bottom: 11px;
-            color: var(--dark-navy);
-            font-size: 1.08rem;
-            font-weight: bold;
-            white-space: pre-line;
-        }
-
-        .question-item.unanswered {
-            padding: 13px;
-            border: 3px solid #f39c12;
-            border-radius: 9px;
-            background: #fffaf0;
-        }
-
-        /* ──────────────────────────
-           다국어 도움말
-        ────────────────────────── */
-
-        .hint-box {
-            margin: 10px 0 13px;
-            padding: 11px 15px;
-            border-left: 5px solid var(--main-green);
-            border-radius: 0 7px 7px 0;
-            background: #f8f9f9;
-            font-size: 0.91rem;
-        }
-
-        .hint-line {
-            display: flex;
-            gap: 9px;
-            margin: 3px 0;
-        }
-
-        .hint-tag {
-            min-width: 120px;
-            color: #148f77;
-            font-weight: bold;
-        }
-
-        /* ──────────────────────────
-           객관식
-        ────────────────────────── */
-
-        .options-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .option-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 11px 14px;
-            border: 1px solid #e1e7e9;
-            border-radius: 7px;
-            background: #f8f9fa;
-            cursor: pointer;
-            transition: background-color 0.15s;
-        }
-
-        .option-label:hover {
-            background: #edf8f2;
-        }
-
-        input[type="radio"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--main-green);
-        }
-
-        /* ──────────────────────────
-           직접 쓰기
-        ────────────────────────── */
-
-        .write-input {
-            width: min(410px, 95%);
-            margin-top: 8px;
-            padding: 10px 13px;
-            border: 2px solid #d5dbdb;
-            border-radius: 7px;
-            color: var(--dark-blue);
-            font-size: 1rem;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .write-input.correct-input {
-            border-color: var(--main-green);
-            background: #f1fcf5;
-        }
-
-        .write-input.wrong-input {
-            border-color: var(--main-red);
-            background: #fff4f2;
-        }
-
-        /* ──────────────────────────
-           정오표시
-        ────────────────────────── */
-
-        .feedback-msg {
-            display: none;
-            margin-top: 9px;
-            font-size: 0.95rem;
-            font-weight: bold;
-        }
-
-        .feedback-correct {
-            color: var(--main-green);
-        }
-
-        .feedback-wrong {
-            color: var(--main-red);
-        }
-
-        .stage-result {
-            display: none;
-            margin: 20px 0 5px;
-            padding: 18px;
-            border-radius: 11px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .stage-pass {
-            border: 1px solid #bce4cd;
-            background: #eefaf3;
-            color: var(--dark-green);
-        }
-
-        .stage-fail {
-            border: 1px solid #f3c1bb;
-            background: #fff3f1;
-            color: var(--dark-red);
-        }
-
-        /* ──────────────────────────
-           O/X 게임
-        ────────────────────────── */
-
-        .ox-question {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 110px;
-            margin-bottom: 18px;
-            padding: 20px;
-            border-radius: 13px;
-            background: #e8f4f8;
-            color: var(--dark-navy);
-            font-size: 1.22rem;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .ox-button-row {
-            text-align: center;
-        }
-
-        .ox-btn {
-            width: 92px;
-            height: 92px;
-            margin: 0 18px;
-            border: none;
-            border-radius: 50%;
-            color: var(--white);
-            font-size: 2.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.15s;
-        }
-
-        .ox-btn:hover {
-            transform: scale(1.06);
-        }
-
-        .btn-o {
-            background: var(--main-blue);
-        }
-
-        .btn-x {
-            background: var(--main-red);
-        }
-
-        /* ──────────────────────────
-           메신저 게임
-        ────────────────────────── */
-
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            width: min(590px, 100%);
-            height: 480px;
-            margin: 0 auto;
-            padding: 18px;
-            border-radius: 16px;
-            background: #abc1d1;
-            box-shadow: inset 0 0 11px rgba(0, 0, 0, 0.15);
-        }
-
-        .chat-history {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            gap: 12px;
-            overflow-y: auto;
-            padding: 5px;
-        }
-
-        .chat-bubble {
-            max-width: 85%;
-            padding: 11px 15px;
-            border-radius: 15px;
-            font-size: 0.96rem;
-            font-weight: bold;
-            line-height: 1.48;
-            white-space: pre-line;
-        }
-
-        .npc-bubble {
-            align-self: flex-start;
-            border-top-left-radius: 0;
-            background: var(--white);
-        }
-
-        .user-bubble {
-            align-self: flex-end;
-            border-top-right-radius: 0;
-            background: #ffeb33;
-            color: #111;
-        }
-
-        .system-bubble {
-            align-self: center;
-            border: 1px solid #c8ead5;
-            background: #eefaf3;
-            color: var(--dark-green);
-        }
-
-        .chat-choices {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            padding-top: 12px;
-        }
-
-        .choice-btn {
-            padding: 11px 13px;
-            border: 1px solid #c5c9ca;
-            border-radius: 10px;
-            background: var(--white);
-            color: #333;
-            font-size: 0.95rem;
-            font-weight: bold;
-            text-align: left;
-            cursor: pointer;
-        }
-
-        .choice-btn:hover {
-            background: #f6fbf8;
-        }
-
-        /* ──────────────────────────
-           문장 퍼즐
-        ────────────────────────── */
-
-        .drop-zone {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            min-height: 70px;
-            margin-bottom: 24px;
-            padding: 15px;
-            border: 2px dashed var(--main-green);
-            border-radius: 11px;
-            background: #fafafa;
-            gap: 9px;
-        }
-
-        .word-bank {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding: 20px;
-            border-radius: 11px;
-            background: #e9ecef;
-            gap: 10px;
-        }
-
-        .word-block {
-            padding: 10px 18px;
-            border-radius: 22px;
-            background: var(--main-green);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.13);
-            color: var(--white);
-            font-weight: bold;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        /* ──────────────────────────
-           결과표
-        ────────────────────────── */
-
-        .report-table {
-            width: 100%;
-            margin: 25px 0;
-            border-collapse: collapse;
-            background: var(--white);
-        }
-
-        .report-table th,
-        .report-table td {
-            padding: 14px 10px;
-            border: 1px solid #d5dbdb;
-            text-align: center;
-        }
-
-        .report-table th {
-            background: var(--dark-navy);
-            color: var(--white);
-        }
-
-        .report-table tr:nth-child(even) {
-            background: #f9f9f9;
-        }
-
-        .total-score-box {
-            margin: 25px 0;
-            padding: 16px;
-            border: 1px solid #f6d0cc;
-            border-radius: 11px;
-            background: #fdf2f2;
-            color: var(--main-red);
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        @media (max-width: 650px) {
-            body {
-                padding: 12px;
-            }
-
-            h1 {
-                font-size: 1.55rem;
-            }
-
-            .menu-card,
-            .stage-container {
-                padding: 20px;
-            }
-
-            .hint-line {
-                flex-direction: column;
-                gap: 0;
-            }
-
-            .hint-tag {
-                min-width: 0;
-            }
-
-            .ox-btn {
-                width: 75px;
-                height: 75px;
-                margin: 0 8px;
-            }
-
-            .report-table {
-                font-size: 0.86rem;
-            }
-
-            .report-table th,
-            .report-table td {
-                padding: 9px 5px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서울대 한국어 2B - 10과 마스터 퀴즈</title>
+<style>
+body{font-family:'Malgun Gothic','Apple SD Gothic Neo',Arial,sans-serif;line-height:1.65;padding:18px;max-width:920px;margin:0 auto;background:#f4f7f6;color:#333}h1{text-align:center;color:#2c3e50;border-bottom:3px solid #27ae60;padding-bottom:12px}.notice{background:#fff;border-left:5px solid #27ae60;padding:14px 18px;border-radius:8px;margin:18px 0;box-shadow:0 2px 8px rgba(0,0,0,.04)}.action-btn{padding:12px 22px;color:#fff;border:0;border-radius:8px;font-size:1em;cursor:pointer;font-weight:bold;margin:5px}.start-btn{background:#27ae60}.next-btn{background:#e67e22}.submit-btn{background:#2980b9}.back-btn{background:#95a5a6}.danger-btn{background:#c0392b}.action-btn:hover{opacity:.9}.menu-card{background:#fff;padding:28px;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,.08);margin:24px 0;cursor:pointer;border:3px solid transparent;transition:.2s}.menu-card:hover{border-color:#27ae60;transform:translateY(-2px)}.menu-card h2{color:#27ae60;margin-top:0}.stage-container{background:#fff;padding:26px;border-radius:12px;margin:20px 0;box-shadow:0 2px 10px rgba(0,0,0,.05);display:none}.stage-title{background:#2c3e50;color:#fff;padding:14px;border-radius:8px;margin-bottom:12px;text-align:center;font-size:1.15em;font-weight:bold}.pass-note{text-align:center;background:#eefaf3;border:1px solid #cdeedd;color:#1e8449;padding:10px 12px;border-radius:8px;margin-bottom:22px;font-weight:bold}.question-item{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed #ddd;font-size:1.06em}.question-text{font-weight:bold;color:#2c3e50;margin-bottom:10px;white-space:pre-line}.unanswered{outline:3px solid #f39c12;border-radius:8px;padding:8px;background:#fffaf0}.hint-box{background:#f9f9f9;border-left:4px solid #27ae60;padding:10px 15px;margin:10px 0 12px;border-radius:0 6px 6px 0;font-size:.9em}.hint-line{margin:3px 0;display:flex;gap:8px}.hint-tag{font-weight:bold;min-width:118px;color:#16a085}.options-group{display:flex;flex-direction:column;gap:8px}.option-label{background:#f8f9fa;padding:10px 14px;border-radius:6px;cursor:pointer;border:1px solid #e5e8e8;display:flex;align-items:center;gap:10px}.option-label:hover{background:#eef7f2}input[type=radio]{width:18px;height:18px;accent-color:#27ae60}.write-input{border:2px solid #ddd;border-radius:6px;padding:8px 12px;font-size:1em;width:min(340px,90%);outline:none;font-weight:bold;color:#2980b9;text-align:center;margin-top:10px}.feedback-msg{margin-top:8px;font-size:.94em;font-weight:bold;display:none}.feedback-correct{color:#27ae60}.feedback-wrong{color:#e74c3c}.stage-result{margin:18px 0 8px;padding:16px;border-radius:10px;text-align:center;font-weight:bold;display:none}.stage-pass{background:#eefaf3;border:1px solid #bce4cd;color:#1e8449}.stage-fail{background:#fff4f2;border:1px solid #f5c6c0;color:#c0392b}.ox-question{font-size:1.2em;font-weight:bold;min-height:95px;display:flex;align-items:center;justify-content:center;background:#e8f4f8;border-radius:12px;margin-bottom:18px;padding:18px;color:#2c3e50;text-align:center}.ox-btn{width:88px;height:88px;font-size:2.1em;border-radius:50%;border:0;cursor:pointer;color:white;margin:0 18px;font-weight:bold}.btn-o{background:#3498db}.btn-x{background:#e74c3c}.chat-container{background:#abc1d1;padding:18px;border-radius:15px;max-width:560px;margin:0 auto;height:460px;display:flex;flex-direction:column;box-shadow:inset 0 0 10px rgba(0,0,0,.15)}.chat-history{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:5px}.chat-bubble{max-width:84%;padding:11px 15px;border-radius:15px;font-size:.95em;line-height:1.45;font-weight:bold;white-space:pre-line}.npc-bubble{background:#fff;align-self:flex-start;border-top-left-radius:0}.user-bubble{background:#ffeb33;align-self:flex-end;border-top-right-radius:0;color:#000}.system-bubble{background:#eefaf3;align-self:center;color:#1e8449;border:1px solid #cdeedd}.chat-choices{display:flex;flex-direction:column;gap:8px;padding-top:12px}.choice-btn{background:#fff;border:1px solid #ccc;padding:11px;border-radius:10px;text-align:left;cursor:pointer;font-size:.95em;font-weight:bold;color:#333}.drop-zone{min-height:65px;border:2px dashed #27ae60;background:#fafafa;border-radius:10px;padding:15px;margin-bottom:25px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}.word-bank{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:20px;background:#e9ecef;border-radius:10px}.word-block{background:#27ae60;color:white;padding:10px 18px;border-radius:20px;cursor:pointer;font-weight:bold;box-shadow:0 2px 5px rgba(0,0,0,.1);user-select:none}.report-table{width:100%;border-collapse:collapse;margin:25px 0;background:white}.report-table th,.report-table td{border:1px solid #ddd;padding:14px;text-align:center;font-size:1.02em}.report-table th{background:#2c3e50;color:white}.report-table tr:nth-child(even){background:#f9f9f9}.total-score-box{font-size:1.5em;color:#e74c3c;font-weight:bold;margin:25px 0;text-align:center;background:#fdf2f2;padding:15px;border-radius:10px;border:1px solid #f9d5d5}@media(max-width:640px){body{padding:12px}.stage-container{padding:18px}.hint-line{flex-direction:column;gap:0}.hint-tag{min-width:0}.ox-btn{width:74px;height:74px;margin:0 8px}}
+</style>
 </head>
-
 <body>
+<h1 id="heading"></h1>
+<div class="notice" id="notice"></div>
 
-<h1>서울대 한국어 2B - 10과 뭐 먹을래?</h1>
-
-<div class="notice">
-    <strong>10과 마스터 퀴즈</strong><br>
-    음식, 맛, 식당 이용과 관련된 어휘 및
-    <strong>N 중(에서), 반말, V-(으)ㄹ래요?, A-(으)ㄴ데·V-는데·N인데</strong>를
-    연습합니다. 각 세부 단계에서 70점 이상을 받아야 다음 단계로 이동할 수 있습니다.
-</div>
-
-<!-- 메인 메뉴 -->
 <div id="main-menu">
-
-    <div class="menu-card" onclick="openModule('basic')">
-        <h2>1단계: 기본 핵심 체크</h2>
-        <p>
-            어휘 15문항 ➔ 문법 대화 15문항 ➔ 직접 쓰기 15문항
-        </p>
-    </div>
-
-    <div class="menu-card" onclick="openModule('app')">
-        <h2>2단계: 응용 미션 게임</h2>
-        <p>
-            O/X 10문항 ➔ 메신저 대화 10턴 ➔ 문장 퍼즐 10문항
-        </p>
-    </div>
-
-    <div class="button-row">
-        <button
-            type="button"
-            class="action-btn back-btn"
-            onclick="location.href='index.html'"
-        >
-            ← 목록으로
-        </button>
-    </div>
-
+<div class="menu-card" onclick="openModule('basic')"><h2>📝 1단계: 기본 핵심 체크</h2><p>어휘 15문항 ➔ 문법 대화 15문항 ➔ 직접 쓰기 15문항</p></div>
+<div class="menu-card" onclick="openModule('app')"><h2>🎮 2단계: 응용 미션 게임</h2><p>O/X 10문항 ➔ 메신저 대화 10턴 ➔ 문장 퍼즐 10문항</p></div>
+<div style="text-align:center"><button class="action-btn back-btn" onclick="location.href='index.html'">← 목록으로</button></div>
 </div>
 
-<!-- ─────────────────────────────────────
-     1단계: 기본 핵심 체크
-───────────────────────────────────── -->
-<div id="module-basic" class="hidden">
-
-    <!-- 세부 1단계 -->
-    <section id="basic-stage1" class="stage-container">
-        <div class="stage-title">
-            1단계 - 세부 1단계: 워밍업
-        </div>
-
-        <div id="b1-pass-note" class="pass-note"></div>
-        <div id="b1-questions"></div>
-
-        <div class="button-row">
-            <button
-                type="button"
-                class="action-btn submit-btn"
-                onclick="submitBasicStage(0)"
-            >
-                ↵ 채점하기
-            </button>
-        </div>
-
-        <div id="b1-result" class="stage-result"></div>
-    </section>
-
-    <!-- 세부 2단계 -->
-    <section id="basic-stage2" class="stage-container">
-        <div class="stage-title">
-            1단계 - 세부 2단계: 문법 적용
-        </div>
-
-        <div id="b2-pass-note" class="pass-note"></div>
-        <div id="b2-questions"></div>
-
-        <div class="button-row">
-            <button
-                type="button"
-                class="action-btn submit-btn"
-                onclick="submitBasicStage(1)"
-            >
-                ↵ 채점하기
-            </button>
-        </div>
-
-        <div id="b2-result" class="stage-result"></div>
-    </section>
-
-    <!-- 세부 3단계 -->
-    <section id="basic-stage3" class="stage-container">
-        <div class="stage-title">
-            1단계 - 세부 3단계: 직접 쓰기
-        </div>
-
-        <div id="b3-pass-note" class="pass-note"></div>
-        <div id="b3-questions"></div>
-
-        <div class="button-row">
-            <button
-                type="button"
-                class="action-btn submit-btn"
-                onclick="submitBasicStage(2)"
-            >
-                ↵ 최종 채점
-            </button>
-        </div>
-
-        <div id="b3-result" class="stage-result"></div>
-    </section>
-
-    <!-- 1단계 결과 -->
-    <section id="basic-report" class="stage-container">
-
-        <div
-            class="stage-title"
-            style="background: #27ae60;"
-        >
-            1단계 최종 성취도 리포트
-        </div>
-
-        <table class="report-table">
-            <thead>
-                <tr>
-                    <th>학습 평가 항목</th>
-                    <th>유형</th>
-                    <th>맞힌 문항 수</th>
-                    <th>백분율 점수</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr>
-                    <td id="r-b1-label"></td>
-                    <td id="r-b1-type"></td>
-                    <td id="r-b1-count"></td>
-                    <td id="r-b1-pct"></td>
-                </tr>
-
-                <tr>
-                    <td id="r-b2-label"></td>
-                    <td id="r-b2-type"></td>
-                    <td id="r-b2-count"></td>
-                    <td id="r-b2-pct"></td>
-                </tr>
-
-                <tr>
-                    <td id="r-b3-label"></td>
-                    <td id="r-b3-type"></td>
-                    <td id="r-b3-count"></td>
-                    <td id="r-b3-pct"></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="total-score-box">
-            1단계 최종 총점:
-            <span id="r-basic-total"></span>
-        </div>
-
-        <div class="button-row">
-            <button
-                type="button"
-                class="action-btn start-btn"
-                onclick="location.reload()"
-            >
-                🏠 메인으로 이동
-            </button>
-        </div>
-
-    </section>
-
+<div id="module-basic" style="display:none;">
+<div id="basic-stage1" class="stage-container"><div class="stage-title">📝 1단계 - 세부 1단계: 워밍업</div><div class="pass-note" id="b1-pass-note"></div><div id="b1-questions"></div><div style="text-align:center"><button class="action-btn submit-btn" onclick="submitBasicStage(0)">채점하기</button></div><div id="b1-result" class="stage-result"></div></div>
+<div id="basic-stage2" class="stage-container"><div class="stage-title">📝 1단계 - 세부 2단계: 문법 적용</div><div class="pass-note" id="b2-pass-note"></div><div id="b2-questions"></div><div style="text-align:center"><button class="action-btn submit-btn" onclick="submitBasicStage(1)">채점하기</button></div><div id="b2-result" class="stage-result"></div></div>
+<div id="basic-stage3" class="stage-container"><div class="stage-title">📝 1단계 - 세부 3단계: 직접 쓰기</div><div class="pass-note" id="b3-pass-note"></div><div id="b3-questions"></div><div style="text-align:center"><button class="action-btn submit-btn" onclick="submitBasicStage(2)">최종 채점</button></div><div id="b3-result" class="stage-result"></div></div>
+<div id="basic-report" class="stage-container"><div class="stage-title" style="background:#27ae60">📊 1단계 최종 성취도 리포트</div><table class="report-table"><thead><tr><th>학습 평가 항목</th><th>유형</th><th>맞힌 문항 수</th><th>백분율 점수</th></tr></thead><tbody><tr><td id="r-b1-label"></td><td id="r-b1-type"></td><td id="r-b1-count"></td><td id="r-b1-pct"></td></tr><tr><td id="r-b2-label"></td><td id="r-b2-type"></td><td id="r-b2-count"></td><td id="r-b2-pct"></td></tr><tr><td id="r-b3-label"></td><td id="r-b3-type"></td><td id="r-b3-count"></td><td id="r-b3-pct"></td></tr></tbody></table><div class="total-score-box">1단계 최종 총점: <span id="r-basic-total"></span></div><button class="action-btn start-btn" onclick="location.reload()" style="display:block;margin:0 auto">메인으로 이동</button></div>
 </div>
 
-<!-- ─────────────────────────────────────
-     2단계: 응용 미션 게임
-───────────────────────────────────── -->
-<div id="module-app" class="hidden">
-
-    <!-- 미션 1: O/X -->
-    <section id="app-stage1" class="stage-container">
-
-        <div class="stage-title">
-            2단계 - 미션 1: 스피드 O/X
-        </div>
-
-        <div id="a1-pass-note" class="pass-note"></div>
-
-        <div id="ox-txt" class="ox-question"></div>
-        <div id="ox-hint"></div>
-
-        <div id="ox-button-row" class="ox-button-row">
-            <button
-                type="button"
-                class="ox-btn btn-o"
-                onclick="handleOx('O')"
-                aria-label="O"
-            >
-                O
-            </button>
-
-            <button
-                type="button"
-                class="ox-btn btn-x"
-                onclick="handleOx('X')"
-                aria-label="X"
-            >
-                X
-            </button>
-        </div>
-
-        <div id="ox-result" class="stage-result"></div>
-
-    </section>
-
-    <!-- 미션 2: 메신저 -->
-    <section id="app-stage2" class="stage-container">
-
-        <div class="stage-title">
-            2단계 - 미션 2: 톡톡 메신저
-        </div>
-
-        <div id="a2-pass-note" class="pass-note"></div>
-
-        <div class="chat-container">
-            <div id="chat-history" class="chat-history"></div>
-            <div id="chat-choices" class="chat-choices"></div>
-        </div>
-
-        <div id="chat-result" class="stage-result"></div>
-
-    </section>
-
-    <!-- 미션 3: 문장 퍼즐 -->
-    <section id="app-stage3" class="stage-container">
-
-        <div class="stage-title">
-            2단계 - 미션 3: 문장 퍼즐
-        </div>
-
-        <div id="a3-pass-note" class="pass-note"></div>
-
-        <p
-            id="puzzle-guide"
-            style="text-align: center; font-weight: bold;"
-        ></p>
-
-        <div id="puzzle-hint"></div>
-
-        <div id="puzzle-drop" class="drop-zone"></div>
-        <div id="puzzle-bank" class="word-bank"></div>
-
-        <div class="button-row">
-            <button
-                type="button"
-                class="action-btn back-btn"
-                onclick="resetPuzzle()"
-            >
-                ↻ 다시 정렬
-            </button>
-
-            <button
-                type="button"
-                class="action-btn submit-btn"
-                onclick="checkPuzzle()"
-            >
-                ↵ 검사하기
-            </button>
-        </div>
-
-        <div id="puzzle-result" class="stage-result"></div>
-
-    </section>
-
-    <!-- 2단계 결과 -->
-    <section id="app-report" class="stage-container">
-
-        <div
-            class="stage-title"
-            style="background: #2980b9;"
-        >
-            2단계 응용 게임 결과 리포트
-        </div>
-
-        <table class="report-table">
-            <thead>
-                <tr>
-                    <th>응용 미션</th>
-                    <th>진행 방식</th>
-                    <th>맞힌 문항 수</th>
-                    <th>백분율 점수</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr>
-                    <td id="r-a1-label"></td>
-                    <td>O/X</td>
-                    <td id="r-a1-count"></td>
-                    <td id="r-a1-pct"></td>
-                </tr>
-
-                <tr>
-                    <td id="r-a2-label"></td>
-                    <td>대화 선택</td>
-                    <td id="r-a2-count"></td>
-                    <td id="r-a2-pct"></td>
-                </tr>
-
-                <tr>
-                    <td id="r-a3-label"></td>
-                    <td>문장 조립</td>
-                    <td id="r-a3-count"></td>
-                    <td id="r-a3-pct"></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="total-score-box">
-            2단계 최종 총점:
-            <span id="r-app-total"></span>
-        </div>
-
-        <div class="button-row">
-            <button
-                type="button"
-                class="action-btn start-btn"
-                onclick="location.reload()"
-            >
-                🏠 메인으로 이동
-            </button>
-        </div>
-
-    </section>
-
+<div id="module-app" style="display:none;">
+<div id="app-stage1" class="stage-container"><div class="stage-title">🎮 2단계 - 미션 1: 스피드 O/X</div><div class="pass-note" id="a1-pass-note"></div><div class="ox-question" id="ox-txt"></div><div id="ox-hint"></div><div id="ox-btn-group" style="text-align:center"><button class="ox-btn btn-o" onclick="handleOx('O')">O</button><button class="ox-btn btn-x" onclick="handleOx('X')">X</button></div><div id="ox-result" class="stage-result"></div></div>
+<div id="app-stage2" class="stage-container"><div class="stage-title">🎮 2단계 - 미션 2: 톡톡 메신저</div><div class="pass-note" id="a2-pass-note"></div><div class="chat-container"><div class="chat-history" id="chat-box"></div><div class="chat-choices" id="chat-choice-area"></div></div><div id="chat-result" class="stage-result"></div></div>
+<div id="app-stage3" class="stage-container"><div class="stage-title">🎮 2단계 - 미션 3: 문장 퍼즐</div><div class="pass-note" id="a3-pass-note"></div><p style="text-align:center;font-weight:bold" id="puz-hint-label"></p><div id="puz-hint-box"></div><div class="drop-zone" id="puzzle-drop"></div><div class="word-bank" id="puzzle-bank"></div><div style="text-align:center;margin-top:25px"><button class="action-btn back-btn" onclick="resetPuzzle()">다시 정렬</button><button class="action-btn submit-btn" onclick="checkPuzzle()">검사하기</button></div><div id="puz-result" class="stage-result"></div></div>
+<div id="app-report" class="stage-container"><div class="stage-title" style="background:#2980b9">📊 2단계 응용 게임 결과 리포트</div><table class="report-table"><thead><tr><th>응용 미션</th><th>진행 방식</th><th>맞힌 문항 수</th><th>백분율 점수</th></tr></thead><tbody><tr><td id="r-a1-label"></td><td>O/X</td><td id="r-a1-count"></td><td id="r-a1-pct"></td></tr><tr><td id="r-a2-label"></td><td>대화 선택</td><td id="r-a2-count"></td><td id="r-a2-pct"></td></tr><tr><td id="r-a3-label"></td><td>문장 조립</td><td id="r-a3-count"></td><td id="r-a3-pct"></td></tr></tbody></table><div class="total-score-box">2단계 최종 총점: <span id="r-app-total"></span></div><button class="action-btn start-btn" onclick="location.reload()" style="display:block;margin:0 auto">메인으로 이동</button></div>
 </div>
 
 <script>
-"use strict";
+const quiz = {
+  "pageTitle": "서울대 한국어 2B - 10과 마스터 퀴즈",
+  "heading": "🌿 서울대 한국어 2B - 10과 뭐 먹을래?",
+  "notice": "10과의 음식·맛·식당 평가 어휘와 해당 단원 문법만 사용한 초급 단문 퀴즈입니다. 모든 단계는 70점 이상이어야 다음 단계로 이동합니다.",
+  "basic": [
+    {
+      "type": "choice",
+      "typeLabel": "선택형",
+      "reportLabel": "세부 1단계: 10과 어휘 기초",
+      "items": [
+        {"q":"고추가 많이 들어가서 음식이 아주 [ ].","ans":"매워요","options":["매워요","달아요","싱거워요","차가워요"],"en":"spicy","vn":"cay","mn":"халуун ногоотой","zh":"辣"},
+        {"q":"음식에 소금이 너무 많이 들어갔어요. 음식이 [ ].","ans":"짜요","options":["짜요","싱거워요","달아요","고소해요"],"en":"salty","vn":"mặn","mn":"давстай","zh":"咸"},
+        {"q":"음식에 간이 별로 없어요. 음식이 [ ].","ans":"싱거워요","options":["싱거워요","매워요","짜요","달아요"],"en":"bland","vn":"nhạt","mn":"сул амттай","zh":"淡"},
+        {"q":"설탕이 많이 들어가서 케이크가 [ ].","ans":"달아요","options":["달아요","매워요","짜요","싱거워요"],"en":"sweet","vn":"ngọt","mn":"чихэрлэг","zh":"甜"},
+        {"q":"이 식당은 음식 [ ]이 좋아요.","ans":"맛","options":["맛","값","장소","기간"],"en":"taste","vn":"vị","mn":"амт","zh":"味道"},
+        {"q":"이 식당은 음식 [ ]이 조금 비싸요.","ans":"값","options":["값","맛","서비스","분위기"],"en":"price","vn":"giá","mn":"үнэ","zh":"价格"},
+        {"q":"직원들이 친절해요. 이 식당은 [ ]가 좋아요.","ans":"서비스","options":["서비스","교통","날씨","기간"],"en":"service","vn":"dịch vụ","mn":"үйлчилгээ","zh":"服务"},
+        {"q":"조용하고 음악도 좋아요. 이 식당은 [ ]가 좋아요.","ans":"분위기","options":["분위기","참가비","접수","주소"],"en":"atmosphere","vn":"không khí","mn":"уур амьсгал","zh":"气氛"},
+        {"q":"처음 가는 친구에게 좋은 식당을 [ ]해요.","ans":"추천","options":["추천","주문","접수","통화"],"en":"recommendation","vn":"đề nghị","mn":"зөвлөмж","zh":"推荐"},
+        {"q":"식당에서 비빔밥을 [ ].","ans":"시켜요","options":["시켜요","끓여요","지워요","바꿔요"],"en":"order food","vn":"gọi món","mn":"хоол захиалах","zh":"点菜"},
+        {"q":"한 사람이 먹을 양을 [ ]이라고 해요.","ans":"1인분","options":["1인분","한 모금","한 장","한 통"],"en":"one serving","vn":"một phần ăn","mn":"нэг хүний порц","zh":"一人份"},
+        {"q":"한국 음식이 제 입맛에 좋아요. 한국 음식이 제 [ ].","ans":"입에 맞아요","options":["입에 맞아요","눈에 보여요","손에 있어요","귀에 들려요"],"en":"suit one's taste","vn":"hợp khẩu vị","mn":"амтанд таарах","zh":"合口味"},
+        {"q":"친구를 오래 후에 만났어요. 친구를 [ ] 만났어요.","ans":"오랜만에","options":["오랜만에","미리","자주","갑자기"],"en":"after a long time","vn":"lâu rồi mới","mn":"удаан хугацааны дараа","zh":"好久不见"},
+        {"q":"식당에 가기 전에 전화로 자리를 [ ] 예약했어요.","ans":"미리","options":["미리","나중에","아직","갑자기"],"en":"in advance","vn":"trước","mn":"урьдчилан","zh":"提前"},
+        {"q":"저와 친구는 나이가 같아요. 우리는 [ ]이에요.","ans":"동갑","options":["동갑","선배","후배","직원"],"en":"same age","vn":"cùng tuổi","mn":"нас чацуу","zh":"同岁"}
+      ]
+    },
+    {
+      "type": "choice",
+      "typeLabel": "선택형",
+      "reportLabel": "세부 2단계: 10과 문법 대화",
+      "items": [
+        {"q":"가: 한국 음식 중에서 뭐가 제일 좋아요?\n나: 저는 불고기가 제일 [ ].","ans":"좋아요","options":["좋아요","좋은데요","좋을래요","좋기 전에요"],"en":"Among Korean foods, I like bulgogi the most.","vn":"Trong các món Hàn, tôi thích bulgogi nhất.","mn":"Солонгос хоолнуудаас бульгогид хамгийн дуртай.","zh":"在韩国菜中我最喜欢烤肉。"},
+        {"q":"가: 여러 음식 중에서 뭐 먹을래요?\n나: 저는 비빔밥을 [ ].","ans":"먹을래요","options":["먹을래요","먹었어요","먹으세요","먹는 중이에요"],"en":"I will have bibimbap.","vn":"Tôi sẽ ăn bibimbap.","mn":"Би пибимбап идмээр байна.","zh":"我要吃拌饭。"},
+        {"q":"가: 이 식당 어때요?\n나: 음식은 맛있는데 조금 [ ].","ans":"비싸요","options":["비싸요","먹을래요","식당이에요","주문해요"],"en":"The food is good, but it is a little expensive.","vn":"Món ăn ngon nhưng hơi đắt.","mn":"Хоол амттай ч жаахан үнэтэй.","zh":"菜很好吃，但是有点贵。"},
+        {"q":"가: 뭐 먹을래?\n나: 나는 냉면 [ ].","ans":"먹을래","options":["먹을래","먹을래요","먹었어요","먹으세요"],"en":"I will have naengmyeon.","vn":"Mình sẽ ăn mì lạnh.","mn":"Би хүйтэн гоймон идье.","zh":"我吃冷面。"},
+        {"q":"가: 오늘 뭐 할래?\n나: 친구하고 식당에 [ ].","ans":"갈래","options":["갈래","갈래요","갔어요","가세요"],"en":"I will go to a restaurant with a friend.","vn":"Mình sẽ đi nhà hàng với bạn.","mn":"Би найзтайгаа хоолны газар явъя.","zh":"我要和朋友去餐厅。"},
+        {"q":"가: 한식 중에서 뭐가 제일 매워요?\n나: 김치찌개가 제일 [ ].","ans":"매워요","options":["매워요","매운데요","먹을래요","시키세요"],"en":"Kimchi stew is the spiciest.","vn":"Canh kimchi cay nhất.","mn":"Кимчи шөл хамгийн халуун ногоотой.","zh":"泡菜汤最辣。"},
+        {"q":"가: 이 식당은 왜 좋아해요?\n나: 맛은 좋은데 [ ]도 싸요.","ans":"값","options":["값","주문","문자","대상"],"en":"The taste is good and the price is cheap too.","vn":"Vị ngon mà giá cũng rẻ.","mn":"Амт сайн, үнэ ч хямд.","zh":"味道好，价格也便宜。"},
+        {"q":"가: 점심에 뭐 먹을래요?\n나: 저는 국수보다 김밥을 [ ].","ans":"먹을래요","options":["먹을래요","먹었어요","먹으세요","먹을 때예요"],"en":"I will have gimbap rather than noodles.","vn":"Tôi sẽ ăn gimbap hơn là mì.","mn":"Би гоймонгоос илүү кимбап идмээр байна.","zh":"比起面条，我想吃紫菜包饭。"},
+        {"q":"가: 이 식당은 유명해요?\n나: 네, 유명한데 자리가 별로 [ ].","ans":"없어요","options":["없어요","먹을래요","시켜요","맞아요"],"en":"It is famous, but there are not many seats.","vn":"Nổi tiếng nhưng không có nhiều chỗ.","mn":"Алдартай ч суудал бараг байхгүй.","zh":"很有名，但是座位不多。"},
+        {"q":"가: 뭐 마실래?\n나: 나는 커피 말고 물 [ ].","ans":"마실래","options":["마실래","마실래요","마셨어요","마시세요"],"en":"I will drink water, not coffee.","vn":"Mình uống nước, không uống cà phê.","mn":"Би кофе биш ус ууя.","zh":"我不喝咖啡，喝水。"},
+        {"q":"가: 오늘 저녁에 시간 있어요?\n나: 시간이 있는데 숙제가 [ ].","ans":"많아요","options":["많아요","많을래요","많으세요","많았으면 좋겠어요"],"en":"I have time, but I have a lot of homework.","vn":"Tôi có thời gian nhưng bài tập nhiều.","mn":"Цаг байгаа ч даалгавар их байна.","zh":"有时间，但是作业很多。"},
+        {"q":"가: 친구하고 동갑이에요?\n나: 네, 우리는 [ ].","ans":"동갑이에요","options":["동갑이에요","동갑인데요","동갑할래요","동갑하세요"],"en":"We are the same age.","vn":"Chúng tôi cùng tuổi.","mn":"Бид нас чацуу.","zh":"我们同岁。"},
+        {"q":"가: 어떤 식당을 추천해요?\n나: 서비스가 좋은 식당을 [ ].","ans":"추천해요","options":["추천해요","추천할래요","추천인데요","추천하세요"],"en":"I recommend a restaurant with good service.","vn":"Tôi đề nghị nhà hàng có dịch vụ tốt.","mn":"Үйлчилгээ сайтай хоолны газрыг санал болгож байна.","zh":"我推荐服务好的餐厅。"},
+        {"q":"가: 이 음식이 입에 맞아요?\n나: 네, 조금 매운데 제 입에 [ ].","ans":"맞아요","options":["맞아요","맞을래요","맞으세요","맞는데요"],"en":"It is a little spicy, but it suits my taste.","vn":"Hơi cay nhưng hợp khẩu vị tôi.","mn":"Жаахан халуун ч миний амтанд таарч байна.","zh":"有点辣，但是合我的口味。"},
+        {"q":"가: 뭐 시킬래요?\n나: 불고기 2인분을 [ ].","ans":"시킬래요","options":["시킬래요","시켰어요","시키세요","시키는 중이에요"],"en":"I will order two servings of bulgogi.","vn":"Tôi sẽ gọi hai phần bulgogi.","mn":"Би бульгоги хоёр хүний порц захиална.","zh":"我要点两人份烤肉。"}
+      ]
+    },
+    {
+      "type": "write",
+      "typeLabel": "직접 작성형",
+      "reportLabel": "세부 3단계: 10과 직접 쓰기",
+      "items": [
+        {"q":"가: 한국 음식 중에서 뭐가 제일 좋아요?\n나: 저는 비빔밥이 제일 ______. (좋다)","ans":["좋아요"],"en":"I like bibimbap the most.","vn":"Tôi thích bibimbap nhất.","mn":"Би пибимбапд хамгийн дуртай.","zh":"我最喜欢拌饭。"},
+        {"q":"가: 점심에 뭐 먹을래요?\n나: 저는 냉면을 ______. (먹다)","ans":["먹을래요"],"en":"I will eat naengmyeon.","vn":"Tôi sẽ ăn mì lạnh.","mn":"Би хүйтэн гоймон идмээр байна.","zh":"我要吃冷面。"},
+        {"q":"가: 이 식당 어때요?\n나: 음식은 맛있는데 조금 ______. (비싸다)","ans":["비싸요"],"en":"The food is good, but it is a little expensive.","vn":"Món ăn ngon nhưng hơi đắt.","mn":"Хоол амттай ч жаахан үнэтэй.","zh":"菜很好吃，但是有点贵。"},
+        {"q":"가: 뭐 먹을래?\n나: 나는 김밥 ______. (먹다)","ans":["먹을래"],"en":"I will eat gimbap.","vn":"Mình sẽ ăn gimbap.","mn":"Би кимбап идье.","zh":"我吃紫菜包饭。"},
+        {"q":"가: 한식 중에서 뭐가 제일 매워요?\n나: 김치찌개가 제일 ______. (맵다)","ans":["매워요"],"en":"Kimchi stew is the spiciest.","vn":"Canh kimchi cay nhất.","mn":"Кимчи шөл хамгийн халуун ногоотой.","zh":"泡菜汤最辣。"},
+        {"q":"가: 이 식당은 왜 좋아해요?\n나: 분위기가 좋아서 이 식당을 ______. (좋아하다)","ans":["좋아해요"],"en":"I like this restaurant because the atmosphere is good.","vn":"Tôi thích nhà hàng này vì không khí tốt.","mn":"Уур амьсгал сайхан тул энэ хоолны газарт дуртай.","zh":"因为气氛好，所以喜欢这家餐厅。"},
+        {"q":"가: 불고기를 몇 인분 시킬까요?\n나: 불고기 2인분을 ______. (시키다)","ans":["시킬래요","시키고 싶어요"],"en":"I will order two servings of bulgogi.","vn":"Tôi sẽ gọi hai phần bulgogi.","mn":"Би бульгоги хоёр хүний порц захиална.","zh":"我要点两人份烤肉。"},
+        {"q":"가: 한국 음식이 입에 맞아요?\n나: 네, 제 입에 ______. (맞다)","ans":["맞아요"],"en":"It suits my taste.","vn":"Hợp khẩu vị tôi.","mn":"Миний амтанд таарч байна.","zh":"合我的口味。"},
+        {"q":"가: 이 식당을 친구에게 소개할 거예요?\n나: 네, 친구에게 ______. (추천하다)","ans":["추천할래요","추천할 거예요"],"en":"I will recommend it to my friend.","vn":"Tôi sẽ giới thiệu cho bạn.","mn":"Би найздаа санал болгоно.","zh":"我要推荐给朋友。"},
+        {"q":"가: 친구하고 나이가 같아요?\n나: 네, 우리는 ______. (동갑이다)","ans":["동갑이에요","동갑입니다"],"en":"We are the same age.","vn":"Chúng tôi cùng tuổi.","mn":"Бид нас чацуу.","zh":"我们同岁。"},
+        {"q":"가: 오늘 어디 갈래?\n나: 나는 집 근처 식당에 ______. (가다)","ans":["갈래"],"en":"I will go to a restaurant near my house.","vn":"Mình sẽ đi nhà hàng gần nhà.","mn":"Би гэрийн ойролцоох хоолны газар явъя.","zh":"我要去家附近的餐厅。"},
+        {"q":"가: 이 음식은 어때요?\n나: 조금 짠데 맛은 ______. (있다)","ans":["있어요"],"en":"It is a little salty, but it is tasty.","vn":"Hơi mặn nhưng ngon.","mn":"Жаахан давстай ч амттай.","zh":"有点咸，但是好吃。"},
+        {"q":"가: 뭐 마실래요?\n나: 저는 커피 말고 물을 ______. (마시다)","ans":["마실래요"],"en":"I will drink water, not coffee.","vn":"Tôi sẽ uống nước, không uống cà phê.","mn":"Би кофе биш ус ууя.","zh":"我不喝咖啡，喝水。"},
+        {"q":"가: 이 식당은 유명해요?\n나: 네, 유명한데 자리가 ______. (없다)","ans":["없어요"],"en":"It is famous, but there are no seats.","vn":"Nổi tiếng nhưng không có chỗ.","mn":"Алдартай ч суудал байхгүй.","zh":"很有名，但是没有座位。"},
+        {"q":"가: 음식을 미리 주문할까요?\n나: 네, 미리 ______. (주문하다)","ans":["주문할래요","주문해요"],"en":"I will order in advance.","vn":"Tôi sẽ gọi món trước.","mn":"Би урьдчилан захиална.","zh":"我提前点菜。"}
+      ]
+    }
+  ],
+  "app": {
+    "ox": {
+      "reportLabel": "미션 1: 10과 O/X",
+      "items": [
+        {"q":"'불고기 중에서 비빔밥이 제일 좋아요'는 자연스러운 문장이다.","a":"X","en":"Among bulgogi, I like bibimbap most. This is unnatural.","vn":"Câu này không tự nhiên.","mn":"Энэ өгүүлбэр зохимжгүй.","zh":"这个句子不自然。"},
+        {"q":"'한식 중에서 비빔밥이 제일 좋아요'는 자연스러운 문장이다.","a":"O","en":"Among Korean foods, I like bibimbap most.","vn":"Trong các món Hàn, tôi thích bibimbap nhất.","mn":"Солонгос хоолнуудаас пибимбапд хамгийн дуртай.","zh":"在韩国菜中我最喜欢拌饭。"},
+        {"q":"'뭐 먹을래요?'는 상대방이 무엇을 먹고 싶은지 묻는 말이다.","a":"O","en":"What would you like to eat?","vn":"Bạn muốn ăn gì?","mn":"Юу идмээр байна вэ?","zh":"你想吃什么？"},
+        {"q":"'나는 냉면 먹을래'는 친구에게 쓸 수 있는 반말 표현이다.","a":"O","en":"I will have naengmyeon. Informal style.","vn":"Cách nói thân mật.","mn":"Энгийн ярианы хэлбэр.","zh":"非敬语表达。"},
+        {"q":"'음식은 맛있는데 조금 비싸요'는 앞뒤 내용이 이어지는 자연스러운 문장이다.","a":"O","en":"The food is good, but it is a little expensive.","vn":"Món ăn ngon nhưng hơi đắt.","mn":"Хоол амттай ч жаахан үнэтэй.","zh":"菜很好吃，但是有点贵。"},
+        {"q":"'비빔밥을 먹을래요'는 앞으로 비빔밥을 먹겠다는 뜻이다.","a":"O","en":"I will eat bibimbap.","vn":"Tôi sẽ ăn bibimbap.","mn":"Би пибимбап идмээр байна.","zh":"我要吃拌饭。"},
+        {"q":"'입에 맞아요'는 음식이 맛이 없다는 뜻이다.","a":"X","en":"It suits one's taste.","vn":"Hợp khẩu vị.","mn":"Амтанд таарах.","zh":"合口味。"},
+        {"q":"'미리 예약했어요'는 식당에 가기 전에 예약했다는 뜻이다.","a":"O","en":"I reserved in advance.","vn":"Tôi đã đặt trước.","mn":"Урьдчилан захиалсан.","zh":"提前预订了。"},
+        {"q":"'동갑'은 나이가 같다는 뜻이다.","a":"O","en":"same age","vn":"cùng tuổi","mn":"нас чацуу","zh":"同岁"},
+        {"q":"'1인분'은 세 사람이 먹는 양이라는 뜻이다.","a":"X","en":"one serving for one person","vn":"một phần cho một người","mn":"нэг хүний порц","zh":"一人份"}
+      ]
+    },
+    "chat": {
+      "reportLabel": "미션 2: 10과 메신저 대화",
+      "items": [
+        {"npc":"오늘 점심에 뭐 먹을래요?","opts":["저는 비빔밥을 먹을래요.","저는 어제 비빔밥이에요."],"correct":0},
+        {"npc":"한식 중에서 뭐가 제일 좋아요?","opts":["불고기 중에서 한식이 좋아요.","한식 중에서 불고기가 제일 좋아요."],"correct":1},
+        {"npc":"이 식당은 어때요?","opts":["음식은 맛있는데 조금 비싸요.","음식은 맛있을래요 조금 비싸요."],"correct":0},
+        {"npc":"뭐 마실래?","opts":["나는 물 마실래.","나는 물 마실래요."],"correct":0},
+        {"npc":"불고기 몇 인분 시킬까요?","opts":["불고기 2인분을 시킬래요.","불고기 2인분이 동갑이에요."],"correct":0},
+        {"npc":"한국 음식이 입에 맞아요?","opts":["네, 제 입에 맞아요.","네, 제 손에 맞아요."],"correct":0},
+        {"npc":"이 식당을 왜 좋아해요?","opts":["서비스가 좋아서 좋아해요.","서비스가 먹을래서 좋아해요."],"correct":0},
+        {"npc":"친구하고 나이가 같아요?","opts":["네, 우리는 동갑이에요.","네, 우리는 서비스예요."],"correct":0},
+        {"npc":"식당에 가기 전에 예약했어요?","opts":["네, 미리 예약했어요.","네, 오랜만에 예약이에요."],"correct":0},
+        {"npc":"친구를 오래 후에 만났어요. 어떻게 말해요?","opts":["친구를 오랜만에 만났어요.","친구를 미리 만났어요."],"correct":0}
+      ]
+    },
+    "puzzle": {
+      "reportLabel": "미션 3: 10과 문장 퍼즐",
+      "items": [
+        {"h":"한국 음식 중 가장 좋아하는 것을 말해요.","words":["한식", "중에서", "비빔밥이", "제일", "좋아요."],"ans":"한식 중에서 비빔밥이 제일 좋아요.","en":"Among Korean foods, I like bibimbap the most.","vn":"Trong các món Hàn, tôi thích bibimbap nhất.","mn":"Солонгос хоолнуудаас пибимбапд хамгийн дуртай.","zh":"在韩国菜中我最喜欢拌饭。"},
+        {"h":"점심에 먹고 싶은 음식을 말해요.","words":["저는", "냉면을", "먹을래요."],"ans":"저는 냉면을 먹을래요.","en":"I will eat naengmyeon.","vn":"Tôi sẽ ăn mì lạnh.","mn":"Би хүйтэн гоймон идмээр байна.","zh":"我要吃冷面。"},
+        {"h":"음식은 좋지만 가격이 비싸다고 말해요.","words":["음식은", "맛있는데", "조금", "비싸요."],"ans":"음식은 맛있는데 조금 비싸요.","en":"The food is good, but it is a little expensive.","vn":"Món ăn ngon nhưng hơi đắt.","mn":"Хоол амттай ч жаахан үнэтэй.","zh":"菜很好吃，但是有点贵。"},
+        {"h":"친구에게 반말로 먹고 싶은 것을 말해요.","words":["나는", "김밥", "먹을래."],"ans":"나는 김밥 먹을래.","en":"I will eat gimbap.","vn":"Mình sẽ ăn gimbap.","mn":"Би кимбап идье.","zh":"我吃紫菜包饭。"},
+        {"h":"매운 음식을 설명해요.","words":["김치찌개가", "제일", "매워요."],"ans":"김치찌개가 제일 매워요.","en":"Kimchi stew is the spiciest.","vn":"Canh kimchi cay nhất.","mn":"Кимчи шөл хамгийн халуун ногоотой.","zh":"泡菜汤最辣。"},
+        {"h":"불고기 양을 주문해요.","words":["불고기", "2인분을", "시킬래요."],"ans":"불고기 2인분을 시킬래요.","en":"I will order two servings of bulgogi.","vn":"Tôi sẽ gọi hai phần bulgogi.","mn":"Би бульгоги хоёр хүний порц захиална.","zh":"我要点两人份烤肉。"},
+        {"h":"음식이 입맛에 맞는다고 말해요.","words":["한국", "음식이", "제", "입에", "맞아요."],"ans":"한국 음식이 제 입에 맞아요.","en":"Korean food suits my taste.","vn":"Món Hàn hợp khẩu vị tôi.","mn":"Солонгос хоол миний амтанд таардаг.","zh":"韩国菜合我的口味。"},
+        {"h":"식당을 추천한다고 말해요.","words":["친구에게", "이", "식당을", "추천할래요."],"ans":"친구에게 이 식당을 추천할래요.","en":"I will recommend this restaurant to my friend.","vn":"Tôi sẽ giới thiệu nhà hàng này cho bạn.","mn":"Би энэ хоолны газрыг найздаа санал болгоно.","zh":"我要把这家餐厅推荐给朋友。"},
+        {"h":"나이가 같다고 말해요.","words":["우리는", "동갑이에요."],"ans":"우리는 동갑이에요.","en":"We are the same age.","vn":"Chúng tôi cùng tuổi.","mn":"Бид нас чацуу.","zh":"我们同岁。"},
+        {"h":"식당을 미리 예약했다고 말해요.","words":["식당을", "미리", "예약했어요."],"ans":"식당을 미리 예약했어요.","en":"I reserved the restaurant in advance.","vn":"Tôi đã đặt nhà hàng trước.","mn":"Би хоолны газрыг урьдчилан захиалсан.","zh":"我提前预订了餐厅。"}
+      ]
+    }
+  }
+};
 
-/*
- * ch10.html 1부 끝
- *
- * 다음 부분은 이 줄 아래에 바로 이어 붙입니다.
- * 다음 부분에는 다음 내용이 들어갑니다.
- *
- * 1. 10과 어휘 선택형 15문항
- * 2. 10과 문법 대화 선택형 15문항
- * 3. 10과 직접 쓰기 15문항
- */
+let scores={b1:0,b2:0,b3:0,a1:0,a2:0,a3:0};
+let oxIdx=0, chatIdx=0, puzIdx=0;
+
+function minPass(n){return Math.ceil(n*0.7)}
+function pct(v,n){return Math.round((v/n)*100)+'%'}
+function norm(s){return (s||'').replace(/\s/g,'')}
+function shuffle(arr){let a=[...arr];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function hint(d){return `<div class="hint-box"><div class="hint-line"><span class="hint-tag">🇺🇸 English:</span><span>${d.en}</span></div><div class="hint-line"><span class="hint-tag">🇻🇳 Tiếng Việt:</span><span>${d.vn}</span></div><div class="hint-line"><span class="hint-tag">🇲🇳 Монгол:</span><span>${d.mn}</span></div><div class="hint-line"><span class="hint-tag">🇨🇳 中文:</span><span>${d.zh}</span></div></div>`}
+function openModule(m){document.getElementById('main-menu').style.display='none';document.getElementById('module-'+m).style.display='block';if(m==='basic')initBasic();else startOx()}
+function initBasic(){document.getElementById('basic-stage1').style.display='block';renderBasicStage(0)}
+function renderBasicStage(idx){const stage=quiz.basic[idx];const area=document.getElementById(`b${idx+1}-questions`);area.innerHTML='';document.getElementById(`b${idx+1}-pass-note`).innerText=`통과 기준: ${stage.items.length}문항 중 ${minPass(stage.items.length)}문항 이상 정답`;document.getElementById(`b${idx+1}-result`).style.display='none';stage.items.forEach((d,i)=>{let html=`<div class="question-item" id="b${idx+1}-item-${i}"><div class="question-text">${i+1}. ${d.q}</div>${hint(d)}`;if(stage.type==='choice'){html+='<div class="options-group">';shuffle(d.options).forEach(opt=>{html+=`<label class="option-label"><input type="radio" name="b${idx+1}-q-${i}" value="${opt.replace(/"/g,'&quot;')}"> ${opt}</label>`});html+='</div>'}else{html+=`<input type="text" id="b${idx+1}-in-${i}" class="write-input" placeholder="정답을 입력하세요" autocomplete="off">`}html+=`<div id="b${idx+1}-fb-${i}" class="feedback-msg"></div></div>`;area.insertAdjacentHTML('beforeend',html)})}
+function submitBasicStage(idx){const stage=quiz.basic[idx];let all=true;stage.items.forEach((d,i)=>{const item=document.getElementById(`b${idx+1}-item-${i}`);item.classList.remove('unanswered');if(stage.type==='choice'){if(!document.querySelector(`input[name="b${idx+1}-q-${i}"]:checked`)){all=false;item.classList.add('unanswered')}}else{if(!document.getElementById(`b${idx+1}-in-${i}`).value.trim()){all=false;item.classList.add('unanswered')}}});if(!all){alert('모든 문항에 답해야 채점할 수 있습니다.');return}let correct=0;stage.items.forEach((d,i)=>{let ok=false;if(stage.type==='choice'){let checked=document.querySelector(`input[name="b${idx+1}-q-${i}"]:checked`);ok=checked&&checked.value===d.ans;document.querySelectorAll(`input[name="b${idx+1}-q-${i}"]`).forEach(el=>el.disabled=true)}else{let val=norm(document.getElementById(`b${idx+1}-in-${i}`).value);ok=d.ans.some(a=>val===norm(a));document.getElementById(`b${idx+1}-in-${i}`).disabled=true}if(ok)correct++;let fb=document.getElementById(`b${idx+1}-fb-${i}`);fb.innerHTML=ok?'✓ 정답입니다.':`✗ 오답입니다. 정답: ${Array.isArray(d.ans)?d.ans[0]:d.ans}`;fb.className='feedback-msg '+(ok?'feedback-correct':'feedback-wrong');fb.style.display='block'});scores['b'+(idx+1)]=correct;let result=document.getElementById(`b${idx+1}-result`);let pass=correct>=minPass(stage.items.length);result.className='stage-result '+(pass?'stage-pass':'stage-fail');result.style.display='block';result.innerHTML=pass?`통과했습니다. (${correct}/${stage.items.length}, ${pct(correct,stage.items.length)})<br><button class="action-btn next-btn" onclick="goNextBasic(${idx})">다음 단계로 이동</button>`:`70점 미만입니다. (${correct}/${stage.items.length}, ${pct(correct,stage.items.length)})<br>오답을 확인한 뒤 다시 풀어 주세요.<br><button class="action-btn danger-btn" onclick="retryBasic(${idx})">이 단계 다시 풀기</button>`;window.scrollTo({top:result.offsetTop-80,behavior:'smooth'})}
+function retryBasic(idx){scores['b'+(idx+1)]=0;renderBasicStage(idx);window.scrollTo({top:document.getElementById(`basic-stage${idx+1}`).offsetTop,behavior:'smooth'})}
+function goNextBasic(idx){document.getElementById(`basic-stage${idx+1}`).style.display='none';if(idx<2){document.getElementById(`basic-stage${idx+2}`).style.display='block';renderBasicStage(idx+1);window.scrollTo(0,0)}else{showBasicReport()}}
+function showBasicReport(){document.getElementById('basic-report').style.display='block';quiz.basic.forEach((s,i)=>{document.getElementById(`r-b${i+1}-label`).innerText=s.reportLabel;document.getElementById(`r-b${i+1}-type`).innerText=s.typeLabel;document.getElementById(`r-b${i+1}-count`).innerText=`${scores['b'+(i+1)]} / ${s.items.length}`;document.getElementById(`r-b${i+1}-pct`).innerText=pct(scores['b'+(i+1)],s.items.length)});let total=scores.b1+scores.b2+scores.b3;let max=quiz.basic.reduce((a,s)=>a+s.items.length,0);document.getElementById('r-basic-total').innerText=`${total} / ${max}`;window.scrollTo(0,0)}
+function startOx(){document.getElementById('app-stage1').style.display='block';document.getElementById('a1-pass-note').innerText=`통과 기준: ${quiz.app.ox.items.length}문항 중 ${minPass(quiz.app.ox.items.length)}문항 이상 정답`;oxIdx=0;scores.a1=0;showOx()}
+function showOx(){const data=quiz.app.ox.items;if(oxIdx>=data.length){finishOx();return}let d=data[oxIdx];document.getElementById('ox-txt').innerText=`${oxIdx+1}. ${d.q}`;document.getElementById('ox-hint').innerHTML=hint(d);document.getElementById('ox-btn-group').style.display='block';document.getElementById('ox-result').style.display='none'}
+function handleOx(choice){let d=quiz.app.ox.items[oxIdx];let ok=choice===d.a;if(ok)scores.a1++;document.getElementById('ox-btn-group').style.display='none';let r=document.getElementById('ox-result');r.className='stage-result '+(ok?'stage-pass':'stage-fail');r.style.display='block';r.innerHTML=(ok?'정답입니다.':`오답입니다. 정답: ${d.a}`)+`<br><button class="action-btn next-btn" onclick="oxIdx++;showOx()">다음 문제</button>`}
+function finishOx(){let n=quiz.app.ox.items.length,pass=scores.a1>=minPass(n),r=document.getElementById('ox-result');document.getElementById('ox-txt').innerText='미션 1이 끝났습니다.';document.getElementById('ox-hint').innerHTML='';document.getElementById('ox-btn-group').style.display='none';r.className='stage-result '+(pass?'stage-pass':'stage-fail');r.style.display='block';r.innerHTML=pass?`통과했습니다. (${scores.a1}/${n}, ${pct(scores.a1,n)})<br><button class="action-btn next-btn" onclick="goChat()">미션 2로 이동</button>`:`70점 미만입니다. (${scores.a1}/${n}, ${pct(scores.a1,n)})<br><button class="action-btn danger-btn" onclick="startOx()">미션 1 다시 풀기</button>`}
+function goChat(){document.getElementById('app-stage1').style.display='none';document.getElementById('app-stage2').style.display='block';document.getElementById('a2-pass-note').innerText=`통과 기준: ${quiz.app.chat.items.length}턴 중 ${minPass(quiz.app.chat.items.length)}턴 이상 정답`;chatIdx=0;scores.a2=0;document.getElementById('chat-box').innerHTML='';document.getElementById('chat-result').style.display='none';showChat()}
+function bubble(t,cls){let b=document.createElement('div');b.className=`chat-bubble ${cls}-bubble`;b.innerText=t;let box=document.getElementById('chat-box');box.appendChild(b);box.scrollTop=box.scrollHeight}
+function showChat(){let data=quiz.app.chat.items;if(chatIdx>=data.length){finishChat();return}let d=data[chatIdx];bubble(`[상대방] ${d.npc}`,'npc');let area=document.getElementById('chat-choice-area');area.innerHTML='';shuffle(d.opts.map((o,i)=>({o,i}))).forEach(x=>{let btn=document.createElement('button');btn.className='choice-btn';btn.innerText=x.o;btn.onclick=()=>selectChat(x.i);area.appendChild(btn)})}
+function selectChat(i){let d=quiz.app.chat.items[chatIdx];let ok=i===d.correct;if(ok)scores.a2++;bubble(d.opts[i],'user');if(!ok)bubble(`오답입니다. 정답: ${d.opts[d.correct]}`,'system');chatIdx++;setTimeout(showChat,650)}
+function finishChat(){let n=quiz.app.chat.items.length,pass=scores.a2>=minPass(n),r=document.getElementById('chat-result');document.getElementById('chat-choice-area').innerHTML='';r.className='stage-result '+(pass?'stage-pass':'stage-fail');r.style.display='block';r.innerHTML=pass?`통과했습니다. (${scores.a2}/${n}, ${pct(scores.a2,n)})<br><button class="action-btn next-btn" onclick="goPuzzle()">미션 3으로 이동</button>`:`70점 미만입니다. (${scores.a2}/${n}, ${pct(scores.a2,n)})<br><button class="action-btn danger-btn" onclick="goChat()">미션 2 다시 풀기</button>`}
+function goPuzzle(){document.getElementById('app-stage2').style.display='none';document.getElementById('app-stage3').style.display='block';document.getElementById('a3-pass-note').innerText=`통과 기준: ${quiz.app.puzzle.items.length}문항 중 ${minPass(quiz.app.puzzle.items.length)}문항 이상 정답`;puzIdx=0;scores.a3=0;document.getElementById('puz-result').style.display='none';loadPuzzle()}
+function loadPuzzle(){let data=quiz.app.puzzle.items;if(puzIdx>=data.length){finishPuzzle();return}let d=data[puzIdx];document.getElementById('puz-hint-label').innerText=`${puzIdx+1}. 의미 힌트: ${d.h}`;document.getElementById('puz-hint-box').innerHTML=hint(d);document.getElementById('puzzle-drop').innerHTML='';let bank=document.getElementById('puzzle-bank');bank.innerHTML='';bank.style.display='flex';shuffle(d.words).forEach(w=>{let block=document.createElement('div');block.className='word-block';block.innerText=w;block.onclick=()=>toggleWord(block);bank.appendChild(block)})}
+function toggleWord(el){if(el.parentElement.id==='puzzle-bank')document.getElementById('puzzle-drop').appendChild(el);else document.getElementById('puzzle-bank').appendChild(el)}
+function resetPuzzle(){loadPuzzle()}
+function checkPuzzle(){let d=quiz.app.puzzle.items[puzIdx];let used=Array.from(document.getElementById('puzzle-drop').children);if(used.length!==d.words.length){alert('모든 단어를 사용해야 검사할 수 있습니다.');return}let user=used.map(x=>x.innerText).join(' ');let ok=norm(user)===norm(d.ans);if(ok){scores.a3++;alert('정답입니다.')}else{alert('오답입니다. 정답: '+d.ans)}puzIdx++;loadPuzzle()}
+function finishPuzzle(){let n=quiz.app.puzzle.items.length,pass=scores.a3>=minPass(n),r=document.getElementById('puz-result');document.getElementById('puz-hint-label').innerText='미션 3이 끝났습니다.';document.getElementById('puz-hint-box').innerHTML='';document.getElementById('puzzle-drop').innerHTML='';document.getElementById('puzzle-bank').style.display='none';r.className='stage-result '+(pass?'stage-pass':'stage-fail');r.style.display='block';r.innerHTML=pass?`통과했습니다. (${scores.a3}/${n}, ${pct(scores.a3,n)})<br><button class="action-btn next-btn" onclick="showAppReport()">결과 보기</button>`:`70점 미만입니다. (${scores.a3}/${n}, ${pct(scores.a3,n)})<br><button class="action-btn danger-btn" onclick="goPuzzle()">미션 3 다시 풀기</button>`}
+function showAppReport(){document.getElementById('app-stage3').style.display='none';document.getElementById('app-report').style.display='block';const rows=[['a1','ox'],['a2','chat'],['a3','puzzle']];rows.forEach((r,i)=>{let n=quiz.app[r[1]].items.length;document.getElementById(`r-a${i+1}-label`).innerText=quiz.app[r[1]].reportLabel;document.getElementById(`r-a${i+1}-count`).innerText=`${scores[r[0]]} / ${n}`;document.getElementById(`r-a${i+1}-pct`).innerText=pct(scores[r[0]],n)});let total=scores.a1+scores.a2+scores.a3;let max=quiz.app.ox.items.length+quiz.app.chat.items.length+quiz.app.puzzle.items.length;document.getElementById('r-app-total').innerText=`${total} / ${max}`;window.scrollTo(0,0)}
+document.title=quiz.pageTitle;
+document.getElementById('heading').innerText=quiz.heading;
+document.getElementById('notice').innerText=quiz.notice;
+</script>
+</body>
+</html>
