@@ -1,14 +1,947 @@
-<!DOCTYPE html><html lang="ko" translate="no"><head><meta charset="UTF-8"><meta name="google" content="notranslate"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>서울대 한국어 2B 10과 퀴즈</title>
-<style>
-:root{--main:#2e7d32;--blue:#3498db;--orange:#e67e22;--red:#e74c3c;--dark:#2c3e50;--bg:#f4f7f6;--soft:#fbfdfc;}
-body{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:var(--bg);margin:0;padding:20px;color:#243443;line-height:1.75;}.wrap{max-width:960px;margin:0 auto}.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 4px 18px rgba(0,0,0,.08);margin:20px 0}h1{text-align:center;color:var(--dark);border-bottom:4px solid var(--main);padding-bottom:14px}.subtitle{text-align:center;color:#607d8b;margin-top:-4px}.info{background:#ecfff5;border-left:6px solid var(--main);padding:14px 18px;border-radius:0 12px 12px 0;margin:18px 0}.q-block{border-left:6px solid var(--main);background:var(--soft);padding:20px 24px;margin:22px 0;border-radius:0 12px 12px 0}.q-title{font-weight:800;color:var(--main);font-size:1.12rem;margin-bottom:10px}.q-text{font-size:1.06rem}.input{border:2px solid #cfd8dc;border-radius:8px;padding:8px 12px;font-size:1rem;min-width:250px;margin:3px 6px;font-weight:700;color:#1f618d;background:#fff}.input.correct{border-color:var(--main);background:#f0fff6}.input.wrong{border-color:var(--red);background:#fff5f5}.feedback{display:none;margin-top:12px;padding:12px;border-radius:8px}.feedback.ok{display:block;background:#ecfff5;color:#167a3a}.feedback.no{display:block;background:#fff1f0;color:#b03a2e}.btn{border:0;border-radius:9px;padding:12px 22px;color:#fff;font-weight:700;font-size:1rem;cursor:pointer;margin:6px;text-decoration:none;display:inline-block}.btn-blue{background:var(--blue)}.btn-orange{background:var(--orange)}.btn-gray{background:#95a5a6}.result{font-weight:800;text-align:center;font-size:1.15rem}.small{font-size:.93rem;color:#607d8b}.group-label{display:inline-block;background:#e8f5e9;color:#2e7d32;border-radius:999px;padding:3px 10px;font-size:.88rem;margin-right:6px}@media(max-width:720px){.input{width:92%;min-width:0}.card{padding:20px}}
-</style>
+<!DOCTYPE html>
+<html lang="ko" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google" content="notranslate">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>서울대 한국어 2B - 10과 마스터 퀴즈</title>
+
+    <style>
+        :root {
+            --main-green: #27ae60;
+            --dark-green: #1e8449;
+            --main-blue: #3498db;
+            --dark-blue: #2980b9;
+            --main-orange: #e67e22;
+            --dark-orange: #d35400;
+            --main-red: #e74c3c;
+            --dark-red: #c0392b;
+            --dark-navy: #2c3e50;
+            --gray: #95a5a6;
+            --light-gray: #ecf0f1;
+            --page-bg: #f4f7f6;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--page-bg);
+            color: #333;
+            font-family:
+                "Malgun Gothic",
+                "Apple SD Gothic Neo",
+                Arial,
+                sans-serif;
+            line-height: 1.65;
+        }
+
+        h1 {
+            margin: 10px 0 8px;
+            padding-bottom: 14px;
+            border-bottom: 4px solid var(--main-green);
+            color: var(--dark-navy);
+            text-align: center;
+            font-size: 2rem;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        button:focus-visible,
+        input:focus-visible {
+            outline: 3px solid rgba(52, 152, 219, 0.35);
+            outline-offset: 2px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .notice {
+            margin: 18px 0 24px;
+            padding: 15px 18px;
+            border-left: 6px solid var(--main-green);
+            border-radius: 8px;
+            background: var(--white);
+            box-shadow: 0 2px 9px rgba(0, 0, 0, 0.05);
+            color: #455a64;
+        }
+
+        .notice strong {
+            color: var(--dark-green);
+        }
+
+        /* ──────────────────────────
+           메인 메뉴
+        ────────────────────────── */
+
+        .menu-card {
+            margin: 22px 0;
+            padding: 30px;
+            border: 3px solid transparent;
+            border-radius: 16px;
+            background: var(--white);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition:
+                border-color 0.2s,
+                transform 0.2s,
+                box-shadow 0.2s;
+        }
+
+        .menu-card:hover {
+            border-color: var(--main-green);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 18px rgba(0, 0, 0, 0.11);
+        }
+
+        .menu-card h2 {
+            margin: 0 0 10px;
+            color: var(--main-green);
+        }
+
+        .menu-card p {
+            margin: 0;
+            color: #607d8b;
+            font-size: 1.05rem;
+        }
+
+        /* ──────────────────────────
+           공통 버튼
+        ────────────────────────── */
+
+        .button-row {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .action-btn {
+            margin: 5px;
+            padding: 12px 23px;
+            border: none;
+            border-radius: 9px;
+            color: var(--white);
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition:
+                opacity 0.2s,
+                transform 0.15s;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .start-btn {
+            background: var(--main-green);
+        }
+
+        .submit-btn {
+            background: var(--dark-blue);
+        }
+
+        .next-btn {
+            background: var(--main-orange);
+        }
+
+        .back-btn {
+            background: var(--gray);
+        }
+
+        .retry-btn {
+            background: var(--dark-red);
+        }
+
+        /* ──────────────────────────
+           단계별 화면
+        ────────────────────────── */
+
+        .stage-container {
+            display: none;
+            margin: 22px 0;
+            padding: 28px;
+            border-radius: 14px;
+            background: var(--white);
+            box-shadow: 0 3px 13px rgba(0, 0, 0, 0.07);
+        }
+
+        .stage-title {
+            margin-bottom: 12px;
+            padding: 14px 18px;
+            border-radius: 9px;
+            background: var(--dark-navy);
+            color: var(--white);
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .pass-note {
+            margin-bottom: 22px;
+            padding: 11px 15px;
+            border: 1px solid #c9ebd7;
+            border-radius: 8px;
+            background: #eefaf3;
+            color: var(--dark-green);
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* ──────────────────────────
+           일반 문제
+        ────────────────────────── */
+
+        .question-item {
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #d5dbdb;
+        }
+
+        .question-item:last-child {
+            border-bottom: none;
+        }
+
+        .question-text {
+            margin-bottom: 11px;
+            color: var(--dark-navy);
+            font-size: 1.08rem;
+            font-weight: bold;
+            white-space: pre-line;
+        }
+
+        .question-item.unanswered {
+            padding: 13px;
+            border: 3px solid #f39c12;
+            border-radius: 9px;
+            background: #fffaf0;
+        }
+
+        /* ──────────────────────────
+           다국어 도움말
+        ────────────────────────── */
+
+        .hint-box {
+            margin: 10px 0 13px;
+            padding: 11px 15px;
+            border-left: 5px solid var(--main-green);
+            border-radius: 0 7px 7px 0;
+            background: #f8f9f9;
+            font-size: 0.91rem;
+        }
+
+        .hint-line {
+            display: flex;
+            gap: 9px;
+            margin: 3px 0;
+        }
+
+        .hint-tag {
+            min-width: 120px;
+            color: #148f77;
+            font-weight: bold;
+        }
+
+        /* ──────────────────────────
+           객관식
+        ────────────────────────── */
+
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 14px;
+            border: 1px solid #e1e7e9;
+            border-radius: 7px;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: background-color 0.15s;
+        }
+
+        .option-label:hover {
+            background: #edf8f2;
+        }
+
+        input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--main-green);
+        }
+
+        /* ──────────────────────────
+           직접 쓰기
+        ────────────────────────── */
+
+        .write-input {
+            width: min(410px, 95%);
+            margin-top: 8px;
+            padding: 10px 13px;
+            border: 2px solid #d5dbdb;
+            border-radius: 7px;
+            color: var(--dark-blue);
+            font-size: 1rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .write-input.correct-input {
+            border-color: var(--main-green);
+            background: #f1fcf5;
+        }
+
+        .write-input.wrong-input {
+            border-color: var(--main-red);
+            background: #fff4f2;
+        }
+
+        /* ──────────────────────────
+           정오표시
+        ────────────────────────── */
+
+        .feedback-msg {
+            display: none;
+            margin-top: 9px;
+            font-size: 0.95rem;
+            font-weight: bold;
+        }
+
+        .feedback-correct {
+            color: var(--main-green);
+        }
+
+        .feedback-wrong {
+            color: var(--main-red);
+        }
+
+        .stage-result {
+            display: none;
+            margin: 20px 0 5px;
+            padding: 18px;
+            border-radius: 11px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .stage-pass {
+            border: 1px solid #bce4cd;
+            background: #eefaf3;
+            color: var(--dark-green);
+        }
+
+        .stage-fail {
+            border: 1px solid #f3c1bb;
+            background: #fff3f1;
+            color: var(--dark-red);
+        }
+
+        /* ──────────────────────────
+           O/X 게임
+        ────────────────────────── */
+
+        .ox-question {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 110px;
+            margin-bottom: 18px;
+            padding: 20px;
+            border-radius: 13px;
+            background: #e8f4f8;
+            color: var(--dark-navy);
+            font-size: 1.22rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .ox-button-row {
+            text-align: center;
+        }
+
+        .ox-btn {
+            width: 92px;
+            height: 92px;
+            margin: 0 18px;
+            border: none;
+            border-radius: 50%;
+            color: var(--white);
+            font-size: 2.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.15s;
+        }
+
+        .ox-btn:hover {
+            transform: scale(1.06);
+        }
+
+        .btn-o {
+            background: var(--main-blue);
+        }
+
+        .btn-x {
+            background: var(--main-red);
+        }
+
+        /* ──────────────────────────
+           메신저 게임
+        ────────────────────────── */
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            width: min(590px, 100%);
+            height: 480px;
+            margin: 0 auto;
+            padding: 18px;
+            border-radius: 16px;
+            background: #abc1d1;
+            box-shadow: inset 0 0 11px rgba(0, 0, 0, 0.15);
+        }
+
+        .chat-history {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+            padding: 5px;
+        }
+
+        .chat-bubble {
+            max-width: 85%;
+            padding: 11px 15px;
+            border-radius: 15px;
+            font-size: 0.96rem;
+            font-weight: bold;
+            line-height: 1.48;
+            white-space: pre-line;
+        }
+
+        .npc-bubble {
+            align-self: flex-start;
+            border-top-left-radius: 0;
+            background: var(--white);
+        }
+
+        .user-bubble {
+            align-self: flex-end;
+            border-top-right-radius: 0;
+            background: #ffeb33;
+            color: #111;
+        }
+
+        .system-bubble {
+            align-self: center;
+            border: 1px solid #c8ead5;
+            background: #eefaf3;
+            color: var(--dark-green);
+        }
+
+        .chat-choices {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-top: 12px;
+        }
+
+        .choice-btn {
+            padding: 11px 13px;
+            border: 1px solid #c5c9ca;
+            border-radius: 10px;
+            background: var(--white);
+            color: #333;
+            font-size: 0.95rem;
+            font-weight: bold;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .choice-btn:hover {
+            background: #f6fbf8;
+        }
+
+        /* ──────────────────────────
+           문장 퍼즐
+        ────────────────────────── */
+
+        .drop-zone {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            min-height: 70px;
+            margin-bottom: 24px;
+            padding: 15px;
+            border: 2px dashed var(--main-green);
+            border-radius: 11px;
+            background: #fafafa;
+            gap: 9px;
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            border-radius: 11px;
+            background: #e9ecef;
+            gap: 10px;
+        }
+
+        .word-block {
+            padding: 10px 18px;
+            border-radius: 22px;
+            background: var(--main-green);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.13);
+            color: var(--white);
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* ──────────────────────────
+           결과표
+        ────────────────────────── */
+
+        .report-table {
+            width: 100%;
+            margin: 25px 0;
+            border-collapse: collapse;
+            background: var(--white);
+        }
+
+        .report-table th,
+        .report-table td {
+            padding: 14px 10px;
+            border: 1px solid #d5dbdb;
+            text-align: center;
+        }
+
+        .report-table th {
+            background: var(--dark-navy);
+            color: var(--white);
+        }
+
+        .report-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .total-score-box {
+            margin: 25px 0;
+            padding: 16px;
+            border: 1px solid #f6d0cc;
+            border-radius: 11px;
+            background: #fdf2f2;
+            color: var(--main-red);
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        @media (max-width: 650px) {
+            body {
+                padding: 12px;
+            }
+
+            h1 {
+                font-size: 1.55rem;
+            }
+
+            .menu-card,
+            .stage-container {
+                padding: 20px;
+            }
+
+            .hint-line {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .hint-tag {
+                min-width: 0;
+            }
+
+            .ox-btn {
+                width: 75px;
+                height: 75px;
+                margin: 0 8px;
+            }
+
+            .report-table {
+                font-size: 0.86rem;
+            }
+
+            .report-table th,
+            .report-table td {
+                padding: 9px 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>서울대 한국어 2B - 10과 뭐 먹을래?</h1>
+
+<div class="notice">
+    <strong>10과 마스터 퀴즈</strong><br>
+    음식, 맛, 식당 이용과 관련된 어휘 및
+    <strong>N 중(에서), 반말, V-(으)ㄹ래요?, A-(으)ㄴ데·V-는데·N인데</strong>를
+    연습합니다. 각 세부 단계에서 70점 이상을 받아야 다음 단계로 이동할 수 있습니다.
+</div>
+
+<!-- 메인 메뉴 -->
+<div id="main-menu">
+
+    <div class="menu-card" onclick="openModule('basic')">
+        <h2>1단계: 기본 핵심 체크</h2>
+        <p>
+            어휘 15문항 ➔ 문법 대화 15문항 ➔ 직접 쓰기 15문항
+        </p>
+    </div>
+
+    <div class="menu-card" onclick="openModule('app')">
+        <h2>2단계: 응용 미션 게임</h2>
+        <p>
+            O/X 10문항 ➔ 메신저 대화 10턴 ➔ 문장 퍼즐 10문항
+        </p>
+    </div>
+
+    <div class="button-row">
+        <button
+            type="button"
+            class="action-btn back-btn"
+            onclick="location.href='index.html'"
+        >
+            ← 목록으로
+        </button>
+    </div>
+
+</div>
+
+<!-- ─────────────────────────────────────
+     1단계: 기본 핵심 체크
+───────────────────────────────────── -->
+<div id="module-basic" class="hidden">
+
+    <!-- 세부 1단계 -->
+    <section id="basic-stage1" class="stage-container">
+        <div class="stage-title">
+            1단계 - 세부 1단계: 워밍업
+        </div>
+
+        <div id="b1-pass-note" class="pass-note"></div>
+        <div id="b1-questions"></div>
+
+        <div class="button-row">
+            <button
+                type="button"
+                class="action-btn submit-btn"
+                onclick="submitBasicStage(0)"
+            >
+                ↵ 채점하기
+            </button>
+        </div>
+
+        <div id="b1-result" class="stage-result"></div>
+    </section>
+
+    <!-- 세부 2단계 -->
+    <section id="basic-stage2" class="stage-container">
+        <div class="stage-title">
+            1단계 - 세부 2단계: 문법 적용
+        </div>
+
+        <div id="b2-pass-note" class="pass-note"></div>
+        <div id="b2-questions"></div>
+
+        <div class="button-row">
+            <button
+                type="button"
+                class="action-btn submit-btn"
+                onclick="submitBasicStage(1)"
+            >
+                ↵ 채점하기
+            </button>
+        </div>
+
+        <div id="b2-result" class="stage-result"></div>
+    </section>
+
+    <!-- 세부 3단계 -->
+    <section id="basic-stage3" class="stage-container">
+        <div class="stage-title">
+            1단계 - 세부 3단계: 직접 쓰기
+        </div>
+
+        <div id="b3-pass-note" class="pass-note"></div>
+        <div id="b3-questions"></div>
+
+        <div class="button-row">
+            <button
+                type="button"
+                class="action-btn submit-btn"
+                onclick="submitBasicStage(2)"
+            >
+                ↵ 최종 채점
+            </button>
+        </div>
+
+        <div id="b3-result" class="stage-result"></div>
+    </section>
+
+    <!-- 1단계 결과 -->
+    <section id="basic-report" class="stage-container">
+
+        <div
+            class="stage-title"
+            style="background: #27ae60;"
+        >
+            1단계 최종 성취도 리포트
+        </div>
+
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th>학습 평가 항목</th>
+                    <th>유형</th>
+                    <th>맞힌 문항 수</th>
+                    <th>백분율 점수</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td id="r-b1-label"></td>
+                    <td id="r-b1-type"></td>
+                    <td id="r-b1-count"></td>
+                    <td id="r-b1-pct"></td>
+                </tr>
+
+                <tr>
+                    <td id="r-b2-label"></td>
+                    <td id="r-b2-type"></td>
+                    <td id="r-b2-count"></td>
+                    <td id="r-b2-pct"></td>
+                </tr>
+
+                <tr>
+                    <td id="r-b3-label"></td>
+                    <td id="r-b3-type"></td>
+                    <td id="r-b3-count"></td>
+                    <td id="r-b3-pct"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="total-score-box">
+            1단계 최종 총점:
+            <span id="r-basic-total"></span>
+        </div>
+
+        <div class="button-row">
+            <button
+                type="button"
+                class="action-btn start-btn"
+                onclick="location.reload()"
+            >
+                🏠 메인으로 이동
+            </button>
+        </div>
+
+    </section>
+
+</div>
+
+<!-- ─────────────────────────────────────
+     2단계: 응용 미션 게임
+───────────────────────────────────── -->
+<div id="module-app" class="hidden">
+
+    <!-- 미션 1: O/X -->
+    <section id="app-stage1" class="stage-container">
+
+        <div class="stage-title">
+            2단계 - 미션 1: 스피드 O/X
+        </div>
+
+        <div id="a1-pass-note" class="pass-note"></div>
+
+        <div id="ox-txt" class="ox-question"></div>
+        <div id="ox-hint"></div>
+
+        <div id="ox-button-row" class="ox-button-row">
+            <button
+                type="button"
+                class="ox-btn btn-o"
+                onclick="handleOx('O')"
+                aria-label="O"
+            >
+                O
+            </button>
+
+            <button
+                type="button"
+                class="ox-btn btn-x"
+                onclick="handleOx('X')"
+                aria-label="X"
+            >
+                X
+            </button>
+        </div>
+
+        <div id="ox-result" class="stage-result"></div>
+
+    </section>
+
+    <!-- 미션 2: 메신저 -->
+    <section id="app-stage2" class="stage-container">
+
+        <div class="stage-title">
+            2단계 - 미션 2: 톡톡 메신저
+        </div>
+
+        <div id="a2-pass-note" class="pass-note"></div>
+
+        <div class="chat-container">
+            <div id="chat-history" class="chat-history"></div>
+            <div id="chat-choices" class="chat-choices"></div>
+        </div>
+
+        <div id="chat-result" class="stage-result"></div>
+
+    </section>
+
+    <!-- 미션 3: 문장 퍼즐 -->
+    <section id="app-stage3" class="stage-container">
+
+        <div class="stage-title">
+            2단계 - 미션 3: 문장 퍼즐
+        </div>
+
+        <div id="a3-pass-note" class="pass-note"></div>
+
+        <p
+            id="puzzle-guide"
+            style="text-align: center; font-weight: bold;"
+        ></p>
+
+        <div id="puzzle-hint"></div>
+
+        <div id="puzzle-drop" class="drop-zone"></div>
+        <div id="puzzle-bank" class="word-bank"></div>
+
+        <div class="button-row">
+            <button
+                type="button"
+                class="action-btn back-btn"
+                onclick="resetPuzzle()"
+            >
+                ↻ 다시 정렬
+            </button>
+
+            <button
+                type="button"
+                class="action-btn submit-btn"
+                onclick="checkPuzzle()"
+            >
+                ↵ 검사하기
+            </button>
+        </div>
+
+        <div id="puzzle-result" class="stage-result"></div>
+
+    </section>
+
+    <!-- 2단계 결과 -->
+    <section id="app-report" class="stage-container">
+
+        <div
+            class="stage-title"
+            style="background: #2980b9;"
+        >
+            2단계 응용 게임 결과 리포트
+        </div>
+
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th>응용 미션</th>
+                    <th>진행 방식</th>
+                    <th>맞힌 문항 수</th>
+                    <th>백분율 점수</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td id="r-a1-label"></td>
+                    <td>O/X</td>
+                    <td id="r-a1-count"></td>
+                    <td id="r-a1-pct"></td>
+                </tr>
+
+                <tr>
+                    <td id="r-a2-label"></td>
+                    <td>대화 선택</td>
+                    <td id="r-a2-count"></td>
+                    <td id="r-a2-pct"></td>
+                </tr>
+
+                <tr>
+                    <td id="r-a3-label"></td>
+                    <td>문장 조립</td>
+                    <td id="r-a3-count"></td>
+                    <td id="r-a3-pct"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="total-score-box">
+            2단계 최종 총점:
+            <span id="r-app-total"></span>
+        </div>
+
+        <div class="button-row">
+            <button
+                type="button"
+                class="action-btn start-btn"
+                onclick="location.reload()"
+            >
+                🏠 메인으로 이동
+            </button>
+        </div>
+
+    </section>
+
+</div>
+
 <script>
-const quizData = {"title": "서울대 한국어 2B 10과 퀴즈", "subtitle": "뭐 먹을래? - 음식·맛·식당 평가", "grammar": ["N 중(에서)", "반말", "V-(으)ㄹ래요", "A-(으)ㄴ데 / V-는데 / N인데"], "questions": [{"kind": "대화", "text": "가: 오늘 점심에 뭐 먹을래요?<br>나: 저는 매운 음식을 좋아해요.<br>가: 김치찌개하고 순두부찌개 중에서 뭐 먹을래요?<br>나: 김치찌개가 더 좋으니까 [[0]].<br>가: 그럼 김치찌개로 시킬까요?<br>나: 네, 김치찌개 [[1]].", "answers": [["김치찌개를 먹을래요"], ["시켜요"]]}, {"kind": "대화", "text": "가: 이 식당 어때요?<br>나: 음식은 맛있는데 값이 조금 비싸요.<br>가: 값이 비싸요?<br>나: 네, 음식은 [[0]].<br>가: 그래도 분위기는 좋아요?<br>나: 네, 분위기는 [[1]].", "answers": [["맛있는데 값이 조금 비싸요"], ["좋아요"]]}, {"kind": "대화", "text": "가: 우리 이제 반말할까요?<br>나: 좋아요. 우리는 동갑이잖아요.<br>가: 그럼 이름을 불러도 돼요?<br>나: 응, 앞으로 [[0]].<br>가: 뭐 먹을래?<br>나: 나는 냉면 [[1]].", "answers": [["반말해요", "말을 놓아요"], ["먹을래"]]}, {"kind": "대화", "text": "가: 후식으로 뭐 먹을래요?<br>나: 저는 단 음식을 좋아해요.<br>가: 커피하고 케이크 중에서 뭐 먹을래요?<br>나: 케이크가 달아서 [[0]].<br>가: 커피는 필요 없어요?<br>나: 네, 커피는 [[1]].", "answers": [["케이크를 먹을래요"], ["필요 없어요"]]}, {"kind": "읽기", "text": "민수 씨는 매운 음식을 좋아합니다. 그래서 식당에 가면 김치찌개나 매운탕을 자주 먹습니다. 오늘은 김치찌개와 매운탕 중에서 김치찌개를 골랐습니다. 민수 씨는 매운 음식을 좋아해서 [[0]]. 오늘은 김치찌개와 매운탕 중에서 [[1]].", "answers": [["김치찌개나 매운탕을 자주 먹습니다"], ["김치찌개를 골랐습니다"]]}, {"kind": "읽기", "text": "어제 친구와 한정식집에 갔습니다. 음식은 맛있었는데 값이 비쌌습니다. 서비스는 좋았고 분위기도 조용했습니다. 그 식당은 음식은 [[0]]. 서비스와 분위기는 [[1]].", "answers": [["맛있었는데 값이 비쌌습니다"], ["좋았습니다"]]}, {"kind": "읽기", "text": "저는 한국 음식을 처음 먹었을 때 조금 매웠습니다. 그래도 지금은 매운 음식이 입에 맞습니다. 특히 삼겹살보다 감자탕을 더 좋아합니다. 저는 지금 매운 음식이 [[0]]. 삼겹살보다 [[1]].", "answers": [["입에 맞습니다"], ["감자탕을 더 좋아합니다"]]}, {"kind": "읽기", "text": "우리 반 친구들은 점심 메뉴를 정했습니다. 비빔국수와 칼국수 중에서 비빔국수를 먹기로 했습니다. 날씨가 더워서 시원한 음식이 먹고 싶었기 때문입니다. 친구들은 비빔국수와 칼국수 중에서 [[0]]. 날씨가 더워서 [[1]].", "answers": [["비빔국수를 먹기로 했습니다"], ["시원한 음식이 먹고 싶었습니다"]]}]};
-function renderText(text, qIndex){return text.replace(/\[\[(\d)\]\]/g,(_,n)=>`<input class="input" id="q-${qIndex}-${Number(n)}" placeholder="${Number(n)+1}번 빈칸" autocomplete="off">`)}
-function renderQuiz(){const area=document.getElementById('quizArea');let html='';quizData.questions.forEach((q,i)=>{const label=i<4?'대화':'읽기';html+=`<div class="q-block"><div class="q-title"><span class="group-label">${label}</span>${i+1}. 빈칸에 맞는 말을 쓰세요.</div><div class="q-text">${renderText(q.text,i)}</div><div id="fb-q-${i}" class="feedback"></div></div>`});area.innerHTML=html}
-function norm(s){return (s||'').trim()}
-function submitQuiz(){let total=0,correct=0,empty=false;quizData.questions.forEach((q,qi)=>{q.answers.forEach((ans,ai)=>{total++;const input=document.getElementById(`q-${qi}-${ai}`);if(!norm(input.value))empty=true})});if(empty){alert('모든 빈칸에 답을 쓰세요.');return}quizData.questions.forEach((q,qi)=>{const wrong=[];q.answers.forEach((ans,ai)=>{const input=document.getElementById(`q-${qi}-${ai}`);const value=norm(input.value);const allowed=Array.isArray(ans)?ans:[ans];if(allowed.includes(value)){correct++;input.classList.add('correct')}else{input.classList.add('wrong');wrong.push(`${ai+1}번 정답: ${allowed[0]}`)}input.disabled=true});const fb=document.getElementById(`fb-q-${qi}`);fb.innerHTML=wrong.length?'오답 확인:<br>'+wrong.join('<br>'):'모두 정답입니다.';fb.className='feedback '+(wrong.length?'no':'ok')});const passScore=Math.ceil(total*0.7);const pass=correct>=passScore;const result=document.getElementById('resultArea');result.innerHTML=`<div class="card"><div class="result" style="color:${pass?'#167a3a':'#b03a2e'}">${pass?'통과':'다시 풀기 필요'}: ${correct} / ${total}</div><p class="small" style="text-align:center">통과 기준: ${passScore}개 이상 정답</p><div style="text-align:center"><button class="btn btn-orange" onclick="location.reload()">↻ 다시 풀기</button><a class="btn btn-gray" href="index.html">🏠 메뉴로 가기</a></div></div>`;result.scrollIntoView({behavior:'smooth'})}
-window.onload=renderQuiz;
-</script>
-</head><body><div class="wrap"><h1>서울대 한국어 2B 10과 퀴즈</h1><p class="subtitle">뭐 먹을래? - 음식·맛·식당 평가</p><div class="card"><div class="info"><strong>문제 구성</strong><p class="small">1~4번은 대화 지문, 5~8번은 읽기 지문입니다. 각 문제는 빈칸 2개로 구성됩니다. 모든 빈칸을 입력해야 채점할 수 있고, 70% 이상이면 통과입니다.</p></div><div style="text-align:center"><a class="btn btn-gray" href="index.html">← 메뉴로 가기</a><button class="btn btn-blue" onclick="submitQuiz()">↵ 제출하기</button></div></div><div id="quizArea"></div><div class="card" style="text-align:center"><button class="btn btn-blue" onclick="submitQuiz()">↵ 제출하기</button><a class="btn btn-gray" href="index.html">🏠 메뉴로 가기</a></div><div id="resultArea"></div></div></body></html>
+"use strict";
+
+/*
+ * ch10.html 1부 끝
+ *
+ * 다음 부분은 이 줄 아래에 바로 이어 붙입니다.
+ * 다음 부분에는 다음 내용이 들어갑니다.
+ *
+ * 1. 10과 어휘 선택형 15문항
+ * 2. 10과 문법 대화 선택형 15문항
+ * 3. 10과 직접 쓰기 15문항
+ */
